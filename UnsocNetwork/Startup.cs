@@ -17,6 +17,7 @@ namespace UnsocNetwork
 {
     public class Startup
     {
+        public static byte minimalPasswordLength;
         /// <summary>
         /// Загрузка конфигурации из файла Json
         /// </summary>
@@ -24,7 +25,6 @@ namespace UnsocNetwork
         { get; } = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json")
           .AddJsonFile("appsettings.Development.json")
-          .AddJsonFile("HomeOptions.json")
           .AddJsonFile(Path.Combine(Environment.CurrentDirectory, "appsettings.Development.json"))
           .Build();
 
@@ -41,8 +41,11 @@ namespace UnsocNetwork
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext <AppDbContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
 
+            var passwordPolicies = Configuration["PasswordPolicies:MinimalLenght"];
+            byte.TryParse(passwordPolicies, out minimalPasswordLength);
+
             services.AddIdentity<User, IdentityRole>(opts => {
-                opts.Password.RequiredLength = 3;
+                opts.Password.RequiredLength = minimalPasswordLength;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
@@ -70,6 +73,7 @@ namespace UnsocNetwork
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
