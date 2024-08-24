@@ -28,12 +28,12 @@
         <div class="text-color-gray text-size_12">Дата рождения</div>
         <div class="mrgn center">
             <select asp-for="Date" class="form-control date_control" ID="ddlDay">
-                <option value="">@Model.Date?</option>
+                <option value=""></option>
             </select>
             <span asp-validation-for="Date" class="text-danger"></span>
 
             <select asp-for="Month" class="form-control date_control" asp-items="Html.GetEnumSelectList<UnsocNetwork.ViewModels.Months>()" onchange="PopulateDays()" ID="ddlMonth">
-                <option value="">@Model.Month</option>
+                <option value=""></option>
             </select>
 
             <span asp-validation-for="Month" class="text-danger"></span>
@@ -41,7 +41,7 @@
             <select asp-for="Year" class="form-control date_control" ID="ddlYear"
                     asp-items="Enumerable.Range(DateTime.Now.AddYears(-100).Year, DateTime.Now.AddYears(-14).Year - DateTime.Now.AddYears(-100).Year).Reverse().Select(x=> new SelectListItem(x.ToString(), x.ToString()))"
                     onchange="PopulateDays()">
-                <option value="">@Model.Year</option>
+                <option value=""></option>
             </select>
             <span asp-validation-for="Year" class="text-danger"></span>
         </div>
@@ -51,7 +51,6 @@
         </div>
     </form>
 
-    @Model.Month
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
 

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
 
@@ -43,6 +44,11 @@ namespace UnsocNetwork
 
             var passwordPolicies = Configuration["PasswordPolicies:MinimalLenght"];
             byte.TryParse(passwordPolicies, out minimalPasswordLength);
+
+            // Подключаем автомаппинг
+            var assembly = Assembly.GetAssembly(typeof(MappingProfile));
+            services.AddAutoMapper(assembly);
+
 
             services.AddIdentity<User, IdentityRole>(opts => {
                 opts.Password.RequiredLength = minimalPasswordLength;
