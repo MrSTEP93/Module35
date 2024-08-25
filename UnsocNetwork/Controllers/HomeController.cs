@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
+using UnsocNetwork.ViewModels.Account;
 
 namespace UnsocNetwork.Controllers
 {

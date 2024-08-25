@@ -41,8 +41,10 @@ namespace UnsocNetwork.ViewModels.Account
         [Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
 
+        /*
         [Required]
         [Display(Name = "Логин")]
         public string Login { get; set; }
+        */
     }
 }

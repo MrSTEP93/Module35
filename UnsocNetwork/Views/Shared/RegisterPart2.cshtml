@@ -13,45 +13,59 @@
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <div class="mrgn">
+                Имя:<br />
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
+                Фамилия:<br />
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
 
         <div class="mrgn center">
-            <input asp-for="Date" class="form-control date_control" />
-            <span asp-validation-for="Date" class="text-danger"></span>
+            <input asp-for="Year" class="form-control date_control" />
+            <span asp-validation-for="Year" class="text-danger"></span>
 
             <input asp-for="Month" class="form-control date_control" />
             <span asp-validation-for="Month" class="text-danger"></span>
 
-            <input asp-for="Year" class="form-control date_control" />
-            <span asp-validation-for="Year" class="text-danger"></span>
+            <input asp-for="Date" class="form-control date_control" />
+            <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div>
             <div class="mrgn">
+                EMail:<br />
                 <input asp-for="EmailReg" class="form-control" />
                 <span asp-validation-for="EmailReg" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
+                Пароль:<br />
                 <input asp-for="PasswordReg" class="form-control" />
                 <span asp-validation-for="PasswordReg" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
+                Подтверждение пароля:
                 <input asp-for="PasswordConfirm" class="form-control" />
                 <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
             </div>
         </div>
+        <!--
+        <div>
+            <div class="mrgn">
+                Логин:
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+        </div>
+        -->
         <div class="center">
             <input class="btn_submit" type="submit" value="Регистрация" />
         </div>
