@@ -40,7 +40,7 @@ namespace UnsocNetwork.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("SuccessRegistration", "Home");
                 }
                 else
                 {

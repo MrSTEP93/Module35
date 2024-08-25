@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,14 @@ namespace UnsocNetwork.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new RegistrationStatusViewModel());
+        }
+
+        [HttpGet]
+        [Route("RegistrationSuccess")]
+        public IActionResult Welcome()
+        {
+            return View(new RegistrationStatusViewModel("username", true));
         }
 
         public IActionResult Privacy()

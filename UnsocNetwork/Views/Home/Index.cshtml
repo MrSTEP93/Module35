@@ -1,13 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Главная";
-    //@model UnsocNetwork.ViewModels.Account
+
 }
 
+@model UnsocNetwork.ViewModels.Account.RegistrationStatusViewModel
 <div class="row">
     <div class="side">
         <div class="center">
-            <h1 class="display-4">Welcome</h1>
-            <h2>To our amazing site (jeje) </h2>
+            <h1 class="display-4">@Model.WelcomeMessage[0]</h1>
+            <h2>@Model.WelcomeMessage[1]</h2>
         </div>
         <img class="main-img" src="~/static/img/welcome.png" />
     </div>
