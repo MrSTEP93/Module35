@@ -26,11 +26,12 @@ namespace UnsocNetwork
         public MappingProfile()
         {
             CreateMap<RegisterViewModel, User>()
-                .ForMember("Email", dest => dest.MapFrom(src => src.EmailReg))
-                .ForMember("NickName", dest => dest.MapFrom(src => src.FirstName))
-                .ForMember("BirthDate", opt => opt.ConvertUsing(src => new DateTime(src.Year, src.Month, src.Date)));
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.EmailReg))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Date)));
+                //.ForMember("BirthDate", opt => opt.ConvertUsing(src => new DateTime(src.Year, src.Month, src.Date)));
 
-
+            /*
             // простые образцы из интернета тоже не работают =(
             CreateMap<Source, Destination>()
                 .ForMember(dest => dest.Value, opt => opt.ConvertUsing(src => src.Value.ToString()));
@@ -42,6 +43,7 @@ namespace UnsocNetwork
             //.ForMember("BirthDate", dest => dest.MapFrom(src => src.)
 
             // .ForMember("Name", opt => opt.MapFrom(c => c.FirstName + " " + c.LastName))
+            */
         }
     }
 
