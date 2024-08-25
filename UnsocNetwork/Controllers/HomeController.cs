@@ -22,14 +22,22 @@ namespace UnsocNetwork.Controllers
 
         public IActionResult Index()
         {
-            return View(new RegistrationStatusViewModel());
+            return View(new MainViewModel());
         }
 
         [HttpGet]
-        [Route("RegistrationSuccess")]
+        [Route("SuccessRegistration")]
         public IActionResult Welcome()
         {
-            return View(new RegistrationStatusViewModel("username", true));
+            return View();
+        }
+
+        [HttpGet]
+        [Route("index")]
+        public IActionResult Develop()
+        {
+            string status = "Here you are!!!";
+            return View();
         }
 
         public IActionResult Privacy()

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
 using UnsocNetwork.ViewModels.Account;
@@ -32,6 +34,13 @@ namespace UnsocNetwork.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            /*
+            ModelState.ClearValidationState(nameof(LoginViewModel));
+            if (TryValidateModel( (model.RegisterView, nameof(MainViewModel.RegisterView)))
+            ModelState.ClearValidationState(nameof(LoginViewModel));
+            if (TryValidateModel(model.RegisterView, nameof(model.RegisterView)))
+            */
+            
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
@@ -40,7 +49,8 @@ namespace UnsocNetwork.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("SuccessRegistration", "Home");
+                    return RedirectToAction("Index", "Home");
+                    //return View("Home/Index.cshtml", model);
                 }
                 else
                 {
@@ -50,14 +60,23 @@ namespace UnsocNetwork.Controllers
                     }
                 }
             }
+            StringBuilder values = new();
+            foreach (var item in ModelState.Values)
+            {
+                foreach(var error in item.Errors)
+                {
+                    values.AppendLine($"{error.ErrorMessage} _______ {error.Exception}");
+                }
+            }
+            Console.WriteLine(values.ToString());
             return View("RegisterPart2", model);
         }
 
         [Route("RegisterPart2")]
         [HttpGet]
-        public IActionResult RegisterPart2(RegisterViewModel model)
+        public IActionResult RegisterPart2(MainViewModel model)
         {
-            return View("RegisterPart2", model);
+            return View("RegisterPart2", model.RegisterView);
         }
     }
 }

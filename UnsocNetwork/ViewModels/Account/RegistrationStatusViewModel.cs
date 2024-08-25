@@ -1,11 +1,16 @@
-﻿namespace UnsocNetwork.ViewModels.Account
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace UnsocNetwork.ViewModels.Account
 {
     public class RegistrationStatusViewModel
     {
+        [MaybeNull]
         private bool _isRegistered { get; set; }
 
+        [MaybeNull]
         private string UserName { get; set; }
 
+        [MaybeNull]
         public string[] WelcomeMessage { get; set; }
 
         public RegistrationStatusViewModel(bool isRegistered = false) : this("undef", isRegistered) { }
