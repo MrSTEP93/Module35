@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,11 @@ namespace UnsocNetwork.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    var mainViewModel = new MainViewModel() { 
+                        LoginView = new(), 
+                        RegisterView = model, 
+                        RegStatusView = new(model.FirstName, true) };
+                    return RedirectToAction("Index", "Home", mainViewModel);
                     //return View("Home/Index.cshtml", model);
                 }
                 else

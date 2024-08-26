@@ -20,9 +20,13 @@ namespace UnsocNetwork.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(MainViewModel model)
         {
-            return View(new MainViewModel());
+            if (model == null)
+            {
+                model = new MainViewModel();
+            }
+            return View(model);
         }
 
         [HttpGet]
