@@ -27,12 +27,15 @@
         </div>
 
         <div class="mrgn center">
+            Год:
             <input asp-for="Year" class="form-control date_control" />
             <span asp-validation-for="Year" class="text-danger"></span>
-
+            
+            Месяц:
             <input asp-for="Month" class="form-control date_control" />
             <span asp-validation-for="Month" class="text-danger"></span>
 
+            Число:
             <input asp-for="Date" class="form-control date_control" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
@@ -57,15 +60,6 @@
                 <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
             </div>
         </div>
-        <!--
-        <div>
-            <div class="mrgn">
-                Логин:
-                <input asp-for="Login" class="form-control" />
-                <span asp-validation-for="Login" class="text-danger"></span>
-            </div>
-        </div>
-        -->
         <div class="center">
             <input class="btn_submit" type="submit" value="Регистрация" />
         </div>

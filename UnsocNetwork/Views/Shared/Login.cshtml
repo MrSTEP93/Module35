@@ -1,23 +1,24 @@
-﻿@model UnsocNetwork.ViewModels.Account.LoginViewModel
-
+﻿@model UnsocNetwork.ViewModels.Account.MainViewModel
 @{
     ViewData["Title"] = "Login";
 }
 
 <div class="block-reg background-white">
-    <h4 class="center">Добро пожаловать!</h4>
+    <h4 class="center">Кто ты?</h4>
     <form class="frm" method="post" asp-controller="AccountManager" asp-action="Login">
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <div class="mrgn">
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                EMail:<br />
+                <input asp-for="@Model.LoginView.Email" class="form-control" />
+                <span asp-validation-for="@Model.LoginView.Email" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                Пароль:<br />
+                <input asp-for="@Model.LoginView.Password" class="form-control" />
+                <span asp-validation-for="@Model.LoginView.Password" class="text-danger"></span>
             </div>
         </div>
         <div>

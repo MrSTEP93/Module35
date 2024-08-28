@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,8 +21,42 @@ namespace UnsocNetwork.Controllers
             _logger = logger;
         }
 
+        /*
+        public IActionResult Index(MainViewModel model)
+        {
+            if (model == null)
+            {
+                model = new MainViewModel();
+            }
+            return View(model);
+        }
+        */
+
         public IActionResult Index()
         {
+            string json = TempData["MainViewModel"] as string;
+
+            if (json != null)
+            {
+                var model = JsonConvert.DeserializeObject<MainViewModel>(json);
+                return View(model);
+            }
+
+            return View(new MainViewModel());
+        }
+
+        [HttpGet]
+        [Route("SuccessRegistration")]
+        public IActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("index")]
+        public IActionResult Develop()
+        {
+            string status = "Here you are!!!";
             return View();
         }
 
