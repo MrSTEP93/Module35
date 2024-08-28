@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,11 +52,14 @@ namespace UnsocNetwork.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     var mainViewModel = new MainViewModel() { 
-                        LoginView = new(), 
-                        RegisterView = model, 
+                        LoginView = new() { Email = model.EmailReg}, 
+                        RegisterView = new(), 
                         RegStatusView = new(model.FirstName, true) };
-                    return RedirectToAction("Index", "Home", mainViewModel);
-                    //return View("Home/Index.cshtml", model);
+                    TempData["MainViewModel"] = JsonConvert.SerializeObject(mainViewModel);
+
+                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home", new { model = mainViewModel });
+                    //return View("Home/Index", model);
                 }
                 else
                 {
