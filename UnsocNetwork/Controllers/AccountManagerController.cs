@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
 using UnsocNetwork.ViewModels.Account;
@@ -30,18 +32,18 @@ namespace UnsocNetwork.Controllers
         [Route("Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(MainViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
 
-                var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(user.Email, model.LoginView.Password, model.LoginView.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    if (!string.IsNullOrEmpty(model.LoginView.ReturnUrl) && Url.IsLocalUrl(model.LoginView.ReturnUrl))
                     {
-                        return Redirect(model.ReturnUrl);
+                        return Redirect(model.LoginView.ReturnUrl);
                     }
                     else
                     {
@@ -53,6 +55,16 @@ namespace UnsocNetwork.Controllers
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
+            StringBuilder values = new();
+            foreach (var item in ModelState.Values)
+            {
+                foreach (var error in item.Errors)
+                {
+                    values.AppendLine($"{error.ErrorMessage} _______ {error.Exception}");
+                }
+            }
+            Console.WriteLine(values);
+
             return View("Views/Home/Index.cshtml");
         }
 
