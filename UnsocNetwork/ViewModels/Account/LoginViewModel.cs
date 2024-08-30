@@ -19,7 +19,7 @@ namespace UnsocNetwork.ViewModels.Account
 
         public string ReturnUrl { get; set; }
 
-        public bool IsValid { get
+        private bool IsValid { get
             {
                 return LoginViewModelValidator.Check(this);
             } }

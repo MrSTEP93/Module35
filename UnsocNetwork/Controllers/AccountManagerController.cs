@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,12 +59,14 @@ namespace UnsocNetwork.Controllers
                     }
                     else
                     {
+                        TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
                         return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                    return View("Login", model);
                 }
             }
             StringBuilder values = new();
@@ -74,6 +77,7 @@ namespace UnsocNetwork.Controllers
                     values.AppendLine($"{error.ErrorMessage} _______ {error.Exception}");
                 }
             }
+            TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
             Console.WriteLine(values);
 
             return RedirectToAction("Index", "Home");
