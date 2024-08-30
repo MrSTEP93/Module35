@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,9 +35,19 @@ namespace UnsocNetwork.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(MainViewModel model)
         {
+            // Удаляем ошибки, связанные с RegisterViewModel
+            ModelState.Remove("RegisterView.FirstName");
+            ModelState.Remove("RegisterView.LastName");
+            ModelState.Remove("RegisterView.EmailReg");
+            ModelState.Remove("RegisterView.PasswordReg");
+            ModelState.Remove("RegisterView.PasswordConfirm");
+            ModelState.Remove("RegisterView.Date");
+            ModelState.Remove("RegisterView.Month");
+            ModelState.Remove("RegisterView.Year");
+            
             if (ModelState.IsValid)
             {
-                var user = _mapper.Map<User>(model);
+                var user = _mapper.Map<User>(model.LoginView);
 
                 var result = await _signInManager.PasswordSignInAsync(user.Email, model.LoginView.Password, model.LoginView.RememberMe, false);
                 if (result.Succeeded)
@@ -65,7 +76,7 @@ namespace UnsocNetwork.Controllers
             }
             Console.WriteLine(values);
 
-            return View("Views/Home/Index.cshtml");
+            return RedirectToAction("Index", "Home");
         }
 
         [Route("Logout")]

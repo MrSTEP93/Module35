@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UnsocNetwork.ViewModels.Validators;
 
 namespace UnsocNetwork.ViewModels.Account
 {
@@ -17,6 +18,11 @@ namespace UnsocNetwork.ViewModels.Account
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public bool IsValid { get
+            {
+                return LoginViewModelValidator.Check(this);
+            } }
 
     }
 }

@@ -38,8 +38,6 @@ namespace UnsocNetwork.Controllers
         {
             /*
             ModelState.ClearValidationState(nameof(LoginViewModel));
-            if (TryValidateModel( (model.RegisterView, nameof(MainViewModel.RegisterView)))
-            ModelState.ClearValidationState(nameof(LoginViewModel));
             if (TryValidateModel(model.RegisterView, nameof(model.RegisterView)))
             */
             
