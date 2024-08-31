@@ -79,8 +79,8 @@ namespace UnsocNetwork.Controllers
             }
             TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
             Console.WriteLine(values);
-
-            return RedirectToAction("Index", "Home");
+            return View("Login", model);
+            //return RedirectToAction("Index", "Home");
         }
 
         [Route("Logout")]
