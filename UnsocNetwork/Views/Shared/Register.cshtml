@@ -13,39 +13,42 @@
         <div>
             <div class="mrgn">
                 Имя:<br/>
-                <input asp-for="@Model.FirstName" class="form-control" />
-                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
                 Фамилия:<br />
-                <input asp-for="@Model.LastName" class="form-control" />
-                <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
 
         <div class="text-color-gray text-size_12">Дата рождения</div>
         <div class="mrgn center">
             Год:
-            <select asp-for="@Model.Year" class="form-control date_control" ID="ddlYear"
-                    asp-items="Enumerable.Range(DateTime.Now.AddYears(-100).Year, DateTime.Now.AddYears(-14).Year - DateTime.Now.AddYears(-100).Year).Reverse().Select(x=> new SelectListItem(x.ToString(), x.ToString()))"
+            <select asp-for="Year" class="form-control date_control" ID="ddlYear"
+                    asp-items="Enumerable.Range(DateTime.Now.AddYears(-100).Year, DateTime.Now.AddYears(-14).Year - DateTime.Now.AddYears(-100).Year).
+                    Reverse().Select(x=> new SelectListItem(x.ToString(), x.ToString()))"
                     onchange="PopulateDays()">
                 <option value=""></option>
             </select>
-            <span asp-validation-for="@Model.Year" class="text-danger"></span>
+            <span asp-validation-for="Year" class="text-danger"></span>
 
             Месяц:
-            <select asp-for="@Model.Month" class="form-control date_control" asp-items="Html.GetEnumSelectList<UnsocNetwork.ViewModels.Months>()" onchange="PopulateDays()" ID="ddlMonth">
+            <select asp-for="Month" class="form-control date_control" 
+                    asp-items="Html.GetEnumSelectList<UnsocNetwork.ViewModels.Months>()"
+                    onchange="PopulateDays()" ID="ddlMonth">
                 <option value=""></option>
             </select>
-            <span asp-validation-for="@Model.Month" class="text-danger"></span>
+            <span asp-validation-for="Month" class="text-danger"></span>
 
             Число:
-            <select asp-for="@Model.Date" class="form-control date_control" ID="ddlDay">
+            <select asp-for="Date" class="form-control date_control" ID="ddlDay">
                 <option value=""></option>
             </select>
-            <span asp-validation-for="@Model.Date" class="text-danger"></span>
+            <span asp-validation-for="Date" class="text-danger"></span>
         </div>
 
         <div class="center">
