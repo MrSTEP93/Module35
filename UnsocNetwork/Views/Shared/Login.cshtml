@@ -1,4 +1,4 @@
-﻿@model UnsocNetwork.ViewModels.Account.MainViewModel
+﻿@model UnsocNetwork.ViewModels.Account.LoginViewModel
 @{
     ViewData["Title"] = "Login";
 }
@@ -11,15 +11,15 @@
         <div>
             <div class="mrgn">
                 EMail:<br />
-                <input asp-for="@Model.LoginView.Email" class="form-control" />
-                <span asp-validation-for="LoginView.Email" class="text-danger"></span>
+                <input asp-for="@Model.Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
         <div>
             <div class="mrgn">
                 Пароль:<br />
-                <input asp-for="@Model.LoginView.Password" class="form-control" />
-                <span asp-validation-for="LoginView.Password" class="text-danger"></span>
+                <input asp-for="@Model.Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
         </div>
         <div>

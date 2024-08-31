@@ -36,11 +36,6 @@ namespace UnsocNetwork.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            /*
-            ModelState.ClearValidationState(nameof(LoginViewModel));
-            if (TryValidateModel(model.RegisterView, nameof(model.RegisterView)))
-            */
-            
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
@@ -81,9 +76,9 @@ namespace UnsocNetwork.Controllers
 
         [Route("RegisterPart2")]
         [HttpGet]
-        public IActionResult RegisterPart2(MainViewModel model)
+        public IActionResult RegisterPart2(RegisterViewModel model)
         {
-            return View("RegisterPart2", model.RegisterView);
+            return View("RegisterPart2", model);
         }
     }
 }

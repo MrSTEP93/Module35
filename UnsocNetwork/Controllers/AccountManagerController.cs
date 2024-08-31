@@ -34,8 +34,9 @@ namespace UnsocNetwork.Controllers
         [Route("Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(MainViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
+            /*
             // Удаляем ошибки, связанные с RegisterViewModel
             ModelState.Remove("RegisterView.FirstName");
             ModelState.Remove("RegisterView.LastName");
@@ -45,21 +46,21 @@ namespace UnsocNetwork.Controllers
             ModelState.Remove("RegisterView.Date");
             ModelState.Remove("RegisterView.Month");
             ModelState.Remove("RegisterView.Year");
-            
+            */
             if (ModelState.IsValid)
             {
-                var user = _mapper.Map<User>(model.LoginView);
+                var user = _mapper.Map<User>(model);
 
-                var result = await _signInManager.PasswordSignInAsync(user.Email, model.LoginView.Password, model.LoginView.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(model.LoginView.ReturnUrl) && Url.IsLocalUrl(model.LoginView.ReturnUrl))
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                     {
-                        return Redirect(model.LoginView.ReturnUrl);
+                        return Redirect(model.ReturnUrl);
                     }
                     else
                     {
-                        TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
+                        //TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -77,7 +78,7 @@ namespace UnsocNetwork.Controllers
                     values.AppendLine($"{error.ErrorMessage} _______ {error.Exception}");
                 }
             }
-            TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
+            //TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
             Console.WriteLine(values);
             return View("Login", model);
             //return RedirectToAction("Index", "Home");
