@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/main-page.css" />
+    <link rel="stylesheet" href="~/css/add-styles.css" />
 </head>
 
 <body class="background-main">
@@ -14,10 +15,8 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a asp-area="" asp-controller="Home" asp-action="Index">вКОТакте - первая асоциальная сеть</a>
-                <input type="text" name="searchText" value="" placeholder="Поиск..." />
-                <input type="button" value="Найти" />
-                <partial name="Logoff" />
-                <a asp-area="" asp-controller="Home" asp-action="index">For developers</a>
+                <partial name="_SearchLayoutPartial" />
+                <partial name="_Logoff" />
             </div>
         </nav>
     </header>
@@ -29,7 +28,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - UnsocNetwork
+            &copy; 2024 - UnsocNetwork &nbsp; <a asp-area="" asp-controller="Home" asp-action="index">For developers</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
