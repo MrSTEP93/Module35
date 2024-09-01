@@ -20,17 +20,17 @@ namespace UnsocNetwork.ViewModels.Account
         [Display(Name = "Email", Prompt = "Введите ваш email")]
         public string EmailReg { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Год должен быть заполнен ")]
         [Display(Name = "Год", Prompt = "Год рождения")]
-        [Range(1900, 2100, ErrorMessage = "Кажется, вы нас обманываете")]
+        [Range(1900, 2100, ErrorMessage = "Введите корректный год (от {1} до {2} ")]
         public int Year { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Месяц должен быть заполнен ")]
         [Display(Name = "Месяц", Prompt = "Месяц")]
-        [Range(1, 12, ErrorMessage = "Невозможно ввести месяц меньше 1 и больше 12")]
+        [Range(1, 12, ErrorMessage = "Невозможно ввести месяц меньше 1 и больше 12 ")]
         public int Month { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "День должен быть заполнен")]
         [Display(Name = "День", Prompt = "Число")]
         [Range(1, 31, ErrorMessage = "Невозможно ввести число меньше 1 и больше 31")]
         public int Date { get; set; }
