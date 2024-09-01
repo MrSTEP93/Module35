@@ -15,6 +15,7 @@ namespace UnsocNetwork.Controllers
     public class AccountManagerController : Controller
     {
         private IMapper _mapper;
+
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
