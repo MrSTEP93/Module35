@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
@@ -91,6 +92,16 @@ namespace UnsocNetwork.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [Route("MyProfile")]
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
+        {
+            var user = User;
+            //var model = new UserViewModel(user);
+            return View("User");
         }
     }
 }
