@@ -100,9 +100,9 @@ namespace UnsocNetwork.Controllers
         [HttpGet]
         public async Task<IActionResult> MyProfile()
         {
-            var user = User;
-            //var model = new UserViewModel(user);
-            return View("User");
+            var user = await _userManager.GetUserAsync(User);
+            var model = new UserViewModel(user);
+            return View(model);
         }
     }
 }
