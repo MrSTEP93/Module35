@@ -2,17 +2,18 @@
 
 <div class="background-white">
     <div class="main">
-        --UserFullName--
+        @Model.User.FirstName + " " @Model.User.SecondName + " " + @Model.User.LastName
     </div>
     --PHOTO-- <br />
     <a asp-asp-area="" asp-controller="AccountController" asp-action="MyProfile">--ChangeButton--</a>
     <div class="side">
-        --UserInfo--
-        Name: <br />
-        LastName: <br />
-        Birthdate: <br />
+        Your information: <br />
+        <b>Birthdate:</b> @Model.User.BirthDate<br />
+        <b>Email:</b> @Model.User.BirthDate<br />
+        <b>Status:</b> @Model.User.Status<br />
+        <b>About me:</b> @Model.User.About<br />
+        <b>Registration date:</b> @Model.User.RegDate<br />
 
-        Email: <br />
         <a asp-asp-area="" asp-controller="AccountController" asp-action="MyProfile">--AnotherChangeButton--</a>
     </div>
     <div>

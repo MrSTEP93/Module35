@@ -1,4 +1,9 @@
-﻿@model UnsocNetwork.ViewModels.Account.MainViewModel
+﻿﻿@using Microsoft.AspNetCore.Identity;
+@using UnsocNetwork.Models;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model UnsocNetwork.ViewModels.Account.MainViewModel
 @{
     ViewData["Title"] = "Главная";
 }
@@ -12,8 +17,11 @@
         </div>
     </div>
 
-    <div class="main">
-        <partial name="Login" model="@Model.LoginView"/>
-        <partial name="Register" model="@Model.RegisterView"/>
-    </div>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <div class="main">
+            <partial name="Login" model="@Model.LoginView" />
+            <partial name="Register" model="@Model.RegisterView" />
+        </div>
+    }
 </div>
