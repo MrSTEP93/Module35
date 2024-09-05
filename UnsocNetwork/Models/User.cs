@@ -29,5 +29,10 @@ public class User : IdentityUser
             About = "Пришёл, покушал и поспал";
             RegDate = DateTime.Now;
         }
+
+        public string GetFullName()
+        {
+            return FirstName + " " + SecondName + " " + LastName;
+        }
     }
 }

@@ -15,8 +15,8 @@ namespace UnsocNetwork
         public MappingProfile()
         {
             CreateMap<RegisterViewModel, User>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.EmailReg))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.EmailReg))
+            //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.EmailReg))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Date)));
 
             CreateMap<LoginViewModel, User>()

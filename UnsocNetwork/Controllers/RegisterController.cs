@@ -46,7 +46,7 @@ namespace UnsocNetwork.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     var mainViewModel = new MainViewModel() { 
-                        LoginView = new() { Email = model.EmailReg}, 
+                        LoginView = new() { Email = model.Email}, 
                         RegisterView = new(), 
                         RegStatusView = new(model.FirstName, true) };
                     TempData["MainViewModel"] = JsonConvert.SerializeObject(mainViewModel);

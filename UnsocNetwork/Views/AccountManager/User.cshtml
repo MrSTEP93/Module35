@@ -1,22 +1,48 @@
 ﻿@model UnsocNetwork.ViewModels.Account.UserViewModel
 
-<div class="background-white">
+<h3>
+    @Model.User.GetFullName()
+</h3>
+<div class="row">
     <div class="main">
-        @Model.User.FirstName + " " User.SecondName + " " + User.LastName
+        <img class="main-img" src="@Model.User.PathToPhoto" />
+        <div class="center-align">
+            <form method="get" asp-controller="AccountManager" asp-action="Edit">
+                <input class="enter_submit" type="submit" value="Редактировать" />
+            </form>
+        </div>
     </div>
-    --PHOTO-- <br />
-    <a asp-asp-area="" asp-controller="AccountController" asp-action="MyProfile">--ChangeButton--</a>
+    
     <div class="side">
-        Your information: <br />
-        <b>Birthdate:</b> @Model.User.BirthDate<br />
-        <b>Email:</b> @Model.User.BirthDate<br />
-        <b>Status:</b> @Model.User.Status<br />
-        <b>About me:</b> @Model.User.About<br />
-        <b>Registration date:</b> @Model.User.RegDate<br />
-
+        <div class="lined-block">
+            <div>
+                <label class="gray-text">Статус:</label>
+                <label> @Model.User.Status</label>
+            </div>
+            <div>
+                <label class="gray-text">Дата рождения:</label>
+                <label> @Model.User.BirthDate.ToLongDateString()</label>
+            </div>
+            <div>
+                <label class="gray-text">О себе:</label>
+                <label> @Model.User.About</label>
+            </div>
+            <div>
+                <label class="gray-text">Email:</label>
+                <label> @Model.User.Email</label>
+            </div>
+            <div>
+                <label class="gray-text">Дата регистрации:</label>
+                <label> @Model.User.RegDate.ToLongDateString()</label>
+            </div>
+        </div>
         <a asp-asp-area="" asp-controller="AccountController" asp-action="MyProfile">--AnotherChangeButton--</a>
     </div>
-    <div>
-        --FriendList--
+
+    <div class="lined-block friendcontainer">
+        <label class="gray-text">Список друзей</label>
+        <div class="friendbox">
+            --FriendList--
+        </div>
     </div>
 </div>

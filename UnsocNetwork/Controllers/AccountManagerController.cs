@@ -91,7 +91,7 @@ namespace UnsocNetwork.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var model = new UserViewModel(user);
-            return View(model);
+            return View("User", model);
         }
     }
 }

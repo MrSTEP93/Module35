@@ -1,0 +1,51 @@
+﻿@model UnsocNetwork.ViewModels.Account.UserEditViewModel
+
+<h4>
+    Редактирование информации
+</h4>
+<form class="frm" method="post" asp-controller="AccountManager" asp-action="UserEdit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="mrgn">
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+    <div>
+        <div class="mrgn">
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="text-color-gray text-size_12">Дата рождения (год месяц число)</div>
+    <div class="mrgn">
+        <input asp-for="Year" class="form-control date_control" />
+        <input asp-for="Month" class="form-control date_control" />
+        <input asp-for="Date" class="form-control date_control" />
+        <br />
+        <span asp-validation-for="Year" class="text-danger"></span>
+        <span asp-validation-for="Month" class="text-danger"></span>
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div>
+        <div class="mrgn">
+            EMail:<br />
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div>
+        <div class="mrgn">
+            Статус:<br />
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+    <div>
+        <div class="mrgn">
+            О себе:<br />
+            <input asp-for="About" class="form-control" />
+            <span asp-validation-for="About" class="text-danger"></span>
+        </div>
+    </div>
+</form>
