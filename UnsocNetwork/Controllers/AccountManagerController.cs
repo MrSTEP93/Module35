@@ -38,17 +38,6 @@ namespace UnsocNetwork.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            /*
-            // Удаляем ошибки, связанные с RegisterViewModel
-            ModelState.Remove("RegisterView.FirstName");
-            ModelState.Remove("RegisterView.LastName");
-            ModelState.Remove("RegisterView.EmailReg");
-            ModelState.Remove("RegisterView.PasswordReg");
-            ModelState.Remove("RegisterView.PasswordConfirm");
-            ModelState.Remove("RegisterView.Date");
-            ModelState.Remove("RegisterView.Month");
-            ModelState.Remove("RegisterView.Year");
-            */
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
@@ -62,8 +51,7 @@ namespace UnsocNetwork.Controllers
                     }
                     else
                     {
-                        //TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("MyProfile", "AccountManager");
                     }
                 }
                 else
@@ -72,6 +60,9 @@ namespace UnsocNetwork.Controllers
                     return View("Login", model);
                 }
             }
+            return View("Login", model);
+            //return RedirectToAction("Index", "Home");
+            /*
             StringBuilder values = new();
             foreach (var item in ModelState.Values)
             {
@@ -81,9 +72,7 @@ namespace UnsocNetwork.Controllers
                 }
             }
             //TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
-            Console.WriteLine(values);
-            return View("Login", model);
-            //return RedirectToAction("Index", "Home");
+            Console.WriteLine(values);*/
         }
 
         [Route("Logout")]

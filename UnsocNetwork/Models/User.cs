@@ -4,7 +4,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace UnsocNetwork.Models
 {
-    public class User : IdentityUser
+public class User : IdentityUser
     {
         public string FirstName { get; set; }
 
