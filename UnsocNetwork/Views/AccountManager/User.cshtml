@@ -3,6 +3,7 @@
 <h3>
     @Model.User.GetFullName()
 </h3>
+@Model.User.Id
 <div class="row">
     <div class="main">
         <img class="main-img" src="@Model.User.PathToPhoto" />
@@ -36,7 +37,7 @@
                 <label> @Model.User.RegDate.ToLongDateString()</label>
             </div>
         </div>
-        <a asp-asp-area="" asp-controller="AccountController" asp-action="MyProfile">--AnotherChangeButton--</a>
+        <a asp-area="" asp-controller="AccountManager" asp-action="ShowEditUserForm">Изменить информацию</a>
     </div>
 
     <div class="lined-block friendcontainer">

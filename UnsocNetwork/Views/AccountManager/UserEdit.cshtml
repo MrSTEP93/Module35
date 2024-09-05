@@ -3,8 +3,21 @@
 <h4>
     Редактирование информации
 </h4>
+@if (Model.IsAttempted)
+{
+    <div class="gray-text">
+        @Model.Result
+    </div>
+}
+
 <form class="frm" method="post" asp-controller="AccountManager" asp-action="UserEdit">
     <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="mrgn">
+            <input asp-for="Id" class="form-control"/>
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+    </div>
     <div>
         <div class="mrgn">
             <input asp-for="FirstName" class="form-control" />
@@ -21,11 +34,11 @@
     <div class="mrgn">
         <input asp-for="Year" class="form-control date_control" />
         <input asp-for="Month" class="form-control date_control" />
-        <input asp-for="Date" class="form-control date_control" />
+        <input asp-for="Day" class="form-control date_control" />
         <br />
         <span asp-validation-for="Year" class="text-danger"></span>
         <span asp-validation-for="Month" class="text-danger"></span>
-        <span asp-validation-for="Date" class="text-danger"></span>
+        <span asp-validation-for="Day" class="text-danger"></span>
     </div>
     <div>
         <div class="mrgn">
@@ -48,4 +61,5 @@
             <span asp-validation-for="About" class="text-danger"></span>
         </div>
     </div>
+    <input class="enter_submit" type="submit" value="Редактировать" />
 </form>

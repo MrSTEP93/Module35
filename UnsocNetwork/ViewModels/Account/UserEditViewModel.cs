@@ -6,7 +6,7 @@ namespace UnsocNetwork.ViewModels.Account
 {
     public class UserEditViewModel : BaseUserData
     {
-        public Guid Guid { get; set; }
+        public string Id { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "Отчество", Prompt = "Отчество / псевдоним / кличка / погоняло")]
@@ -19,5 +19,9 @@ namespace UnsocNetwork.ViewModels.Account
         [DataType(DataType.Text)]
         [Display(Name = "О себе", Prompt = "Введите данные о себе")]
         public string About { get; set; }
+
+        public bool IsAttempted { get; set; }
+
+        public string Result { get; set; }
     }
 }

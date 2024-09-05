@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using UnsocNetwork.Extensions;
 using UnsocNetwork.Models;
 using UnsocNetwork.ViewModels.Account;
 
@@ -92,6 +93,47 @@ namespace UnsocNetwork.Controllers
             var user = await _userManager.GetUserAsync(User);
             var model = new UserViewModel(user);
             return View("User", model);
+        }
+
+        [Authorize]
+        [Route("EditProfile")]
+        public async Task<IActionResult> ShowEditUserForm()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var model = _mapper.Map<User, UserEditViewModel>(user);
+            return View("UserEdit", model);
+        }
+
+        [Authorize]
+        [Route("EditProfile")]
+        [HttpPost]
+        public async Task<IActionResult> UserEdit(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //var user = _mapper.Map<User>(model);
+
+                var user = await _userManager.FindByIdAsync(model.Id.ToString());
+                model.IsAttempted = true;
+                user.Convert(model);
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    model.Result = "Information updated";
+                } else
+                {
+                    model.Result = "Some errors occured!";
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            } else 
+            { 
+                ModelState.AddModelError("", "Некорректные данные");
+            }
+            return View("UserEdit", model);
         }
     }
 }

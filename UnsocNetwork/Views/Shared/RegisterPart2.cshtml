@@ -26,11 +26,11 @@
         <div class="mrgn">
             <input asp-for="Year" class="form-control date_control" />
             <input asp-for="Month" class="form-control date_control" />
-            <input asp-for="Date" class="form-control date_control" />
+            <input asp-for="Day" class="form-control date_control" />
             <br/>
             <span asp-validation-for="Year" class="text-danger"></span> 
             <span asp-validation-for="Month" class="text-danger"></span> 
-            <span asp-validation-for="Date" class="text-danger"></span>
+            <span asp-validation-for="Day" class="text-danger"></span>
         </div>
         
         <!--
@@ -52,7 +52,7 @@
             <span asp-validation-for="Month" class="text-danger"></span>
 
             <select asp-for="Date" class="form-control date_control" ID="ddlDay">
-                <option value="">@Model.Date</option>
+                <option value="">@Model.Day</option>
             </select>
             <span asp-validation-for="Date" class="text-danger"></span>
             <script>

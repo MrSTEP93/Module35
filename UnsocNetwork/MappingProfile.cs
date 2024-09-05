@@ -17,10 +17,20 @@ namespace UnsocNetwork
             CreateMap<RegisterViewModel, User>()
             //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.EmailReg))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Date)));
+                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
 
             CreateMap<LoginViewModel, User>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
+            CreateMap<User, UserEditViewModel>()
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.BirthDate.Year))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.BirthDate.Month))
+                .ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.BirthDate.Day));
+                        
+            CreateMap<UserEditViewModel,User> ()
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
         }
     }
 }

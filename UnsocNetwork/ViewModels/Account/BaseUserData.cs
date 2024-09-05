@@ -32,7 +32,7 @@ namespace UnsocNetwork.ViewModels.Account
         [Required(ErrorMessage = "День должен быть заполнен")]
         [Display(Name = "День", Prompt = "Число")]
         [Range(1, 31, ErrorMessage = "Невозможно ввести число меньше 1 и больше 31")]
-        public int Date { get; set; }
+        public int Day { get; set; }
 
     }
 }
