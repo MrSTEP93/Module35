@@ -135,5 +135,12 @@ namespace UnsocNetwork.Controllers
             }
             return View("UserEdit", model);
         }
+
+        //[Route("UserList")]
+        [HttpGet]
+        public async Task<IActionResult> UserList()
+        {
+            return View("");
+        }
     }
 }
