@@ -27,7 +27,7 @@ namespace UnsocNetwork
                 .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.BirthDate.Month))
                 .ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.BirthDate.Day));
                         
-            CreateMap<UserEditViewModel,User> ()
+            CreateMap<UserEditViewModel,User>()
                 //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));

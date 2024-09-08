@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Extensions;
 using UnsocNetwork.Models;
+using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.ViewModels.Account;
 
 namespace UnsocNetwork.Controllers
@@ -21,11 +23,14 @@ namespace UnsocNetwork.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public AccountManagerController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AccountManagerController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         [Route("Login")]
@@ -137,21 +142,60 @@ namespace UnsocNetwork.Controllers
             return View("UserEdit", model);
         }
 
-        //[Route("UserList")]
+        [Route("UserList")]
         [HttpGet]
-        public IActionResult UserList(string search = "")
+        public async Task<IActionResult> UserList(string search)
         {
+            /*
             var model = new SearchViewModel()
             {
                 UserList = _userManager.Users.ToList()
             };
-
+            */
+            /*
             if (search != null)
             {
                 model.UserList = model.UserList.Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
             }
-
+            */
+            var model = await CreateSearch(search);
             return View("UserList", model);
+        }
+
+        private async Task<SearchViewModel> CreateSearch(string search)
+        {
+            var currentUserPrincipal = User;
+
+            var currentUser = await _userManager.GetUserAsync(currentUserPrincipal);
+
+            var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
+            var allFriends = await GetAllFriend();
+
+            var userListWithFriends = new List<UserWithFriendExt>();
+            searchList.ForEach(x =>
+            {
+                var entry = _mapper.Map<UserWithFriendExt>(x);
+                entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == x.Id || x.Id == currentUser.Id).Count() != 0;
+                userListWithFriends.Add(entry);
+            });
+
+            var model = new SearchViewModel()
+            {
+                UserList = userListWithFriends
+            };
+
+            return model;
+        }
+
+        private async Task<List<User>> GetAllFriend()
+        {
+            var user = User;
+
+            var result = await _userManager.GetUserAsync(user);
+
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            return repository.GetFriendsByUser(result);
         }
     }
 }

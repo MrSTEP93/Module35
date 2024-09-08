@@ -56,7 +56,7 @@ namespace UnsocNetwork.Controllers
         [Route("index")]
         public IActionResult Develop()
         {
-            string status = "Here you are!!!";
+            //string status = "Here you are!!!";
             return View();
         }
 

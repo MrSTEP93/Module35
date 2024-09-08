@@ -13,6 +13,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
+using UnsocNetwork.Models.Repositories;
+using UnsocNetwork.Extensions;
 
 namespace UnsocNetwork
 {
@@ -40,7 +42,11 @@ namespace UnsocNetwork
             services.AddControllersWithViews();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext <AppDbContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
+            services
+                .AddDbContext<AppDbContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton)
+                .AddUnitOfWork()
+                .AddCustomRepository<Friend, FriendsRepository>();
+                //.AddCustomRepository<Message, MessageRepository>();
 
             var passwordPolicies = Configuration["PasswordPolicies:MinimalLenght"];
             byte.TryParse(passwordPolicies, out minimalPasswordLength);
