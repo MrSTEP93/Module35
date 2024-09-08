@@ -1,0 +1,17 @@
+﻿@model UnsocNetwork.ViewModels.Account.SearchViewModel;
+
+<div class="block-reg background-white">
+    @if (@Model.UserList.Count == 0)
+    {
+        <label class="gray-text">Поиск не дал результатов</label>
+    } else
+    {
+        @foreach (var user in @Model.UserList)
+        {
+            <div>
+                <label>@user.GetFullName()</label>
+                <hr />
+            </div>
+        }
+    }
+</div>

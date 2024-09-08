@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Extensions;
@@ -138,9 +139,19 @@ namespace UnsocNetwork.Controllers
 
         //[Route("UserList")]
         [HttpGet]
-        public async Task<IActionResult> UserList()
+        public IActionResult UserList(string search = "")
         {
-            return View("");
+            var model = new SearchViewModel()
+            {
+                UserList = _userManager.Users.ToList()
+            };
+
+            if (search != null)
+            {
+                model.UserList = model.UserList.Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
+            }
+
+            return View("UserList", model);
         }
     }
 }
