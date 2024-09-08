@@ -8,21 +8,23 @@
     <div class="main">
         <img class="main-img" src="@Model.User.PathToPhoto" />
         <div class="center-align">
+        <!--
             <form method="get" asp-controller="AccountManager" asp-action="Edit">
                 <input class="enter_submit" type="submit" value="Редактировать" />
             </form>
+        -->
         </div>
     </div>
     
     <div class="side">
         <div class="lined-block">
             <div>
-                <label class="gray-text">Статус:</label>
-                <label> @Model.User.Status</label>
-            </div>
-            <div>
                 <label class="gray-text">Дата рождения:</label>
                 <label> @Model.User.BirthDate.ToLongDateString()</label>
+            </div>
+            <div>
+                <label class="gray-text">Статус:</label>
+                <label> @Model.User.Status</label>
             </div>
             <div>
                 <label class="gray-text">О себе:</label>
