@@ -31,6 +31,8 @@ namespace UnsocNetwork
                 //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
+
+            CreateMap<User, UserWithFriendExt>();
         }
     }
 }

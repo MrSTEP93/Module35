@@ -10,8 +10,8 @@ using UnsocNetwork;
 namespace UnsocNetwork.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240902180058_User_Extended")]
-    partial class User_Extended
+    [Migration("20240909191358_Add-Friend-model")]
+    partial class AddFriendmodel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,6 +152,30 @@ namespace UnsocNetwork.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("UnsocNetwork.Models.Friend", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CurrentFriendId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentFriendId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFriends");
+                });
+
             modelBuilder.Entity("UnsocNetwork.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -290,6 +314,21 @@ namespace UnsocNetwork.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UnsocNetwork.Models.Friend", b =>
+                {
+                    b.HasOne("UnsocNetwork.Models.User", "CurrentFriend")
+                        .WithMany()
+                        .HasForeignKey("CurrentFriendId");
+
+                    b.HasOne("UnsocNetwork.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("CurrentFriend");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

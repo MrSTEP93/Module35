@@ -16,7 +16,7 @@ namespace UnsocNetwork.Extensions
                  where TEntity : class
                  where IRepository : class, IRepository<TEntity>
         {
-            services.AddScoped<IRepository<TEntity>, IRepository>();
+            services.AddTransient<IRepository<TEntity>, IRepository>();
 
             return services;
         }

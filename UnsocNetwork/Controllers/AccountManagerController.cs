@@ -144,7 +144,7 @@ namespace UnsocNetwork.Controllers
 
         [Route("UserList")]
         [HttpGet]
-        public async Task<IActionResult> UserList(string search)
+        public async Task<IActionResult> UserList(string? search)
         {
             /*
             var model = new SearchViewModel()
@@ -158,11 +158,12 @@ namespace UnsocNetwork.Controllers
                 model.UserList = model.UserList.Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
             }
             */
+
             var model = await CreateSearch(search);
             return View("UserList", model);
         }
 
-        private async Task<SearchViewModel> CreateSearch(string search)
+        private async Task<SearchViewModel> CreateSearch(string? search)
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -187,9 +188,7 @@ namespace UnsocNetwork.Controllers
 
         private async Task<List<User>> GetAllFriend()
         {
-            var user = User;
-
-            var result = await _userManager.GetUserAsync(user);
+            var result = await _userManager.GetUserAsync(User);
 
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 

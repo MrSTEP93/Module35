@@ -87,13 +87,16 @@
 
 .friendcontainer {
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .friendbox {
     white-space: nowrap
 }
 
-    .friendbox .datadiv {
-        display: inline-block;
-        max-width: 150px;
-    }
+.friendbox .datadiv {
+    display: inline-block;
+    max-width: 150px;
+}
