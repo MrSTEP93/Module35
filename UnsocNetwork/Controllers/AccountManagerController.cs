@@ -164,9 +164,7 @@ namespace UnsocNetwork.Controllers
 
         private async Task<SearchViewModel> CreateSearch(string search)
         {
-            var currentUserPrincipal = User;
-
-            var currentUser = await _userManager.GetUserAsync(currentUserPrincipal);
+            var currentUser = await _userManager.GetUserAsync(User);
 
             var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
             var allFriends = await GetAllFriend();

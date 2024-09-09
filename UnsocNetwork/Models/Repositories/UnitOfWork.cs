@@ -43,8 +43,8 @@ namespace UnsocNetwork.Models.Repositories
             }
 
             return (IRepository<TEntity>)_repositories[type];
-
         }
+
         public int SaveChanges(bool ensureAutoHistory = false)
         {
             throw new NotImplementedException();
