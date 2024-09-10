@@ -18,7 +18,7 @@ namespace UnsocNetwork.Controllers
 {
     public class AccountManagerController : Controller
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -171,12 +171,29 @@ namespace UnsocNetwork.Controllers
             var allFriends = await GetAllFriend();
 
             var userListWithFriends = new List<UserWithFriendExt>();
-            searchList.ForEach(x =>
+            /*
+            searchList.ForEach(prsn =>
             {
-                var entry = _mapper.Map<UserWithFriendExt>(x);
-                entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == x.Id || x.Id == currentUser.Id).Count() != 0;
+                var entry = _mapper.Map<UserWithFriendExt>(prsn);
+                entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == prsn.Id || prsn.Id == currentUser.Id).Count() != 0;
                 userListWithFriends.Add(entry);
             });
+            */
+            foreach (var prsn in searchList)
+            {
+                var entry = _mapper.Map<UserWithFriendExt>(prsn);
+                var count = 0;
+                foreach (var friend in allFriends) 
+                {
+                    if (friend.Id == prsn.Id || prsn.Id == currentUser.Id)
+                    {
+                        count++;
+                    }
+                }
+
+                entry.IsFriendWithCurrent = count != 0;
+                userListWithFriends.Add(entry);
+            }
 
             var model = new SearchViewModel()
             {
