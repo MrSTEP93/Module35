@@ -6,7 +6,9 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Extensions;
@@ -94,10 +96,16 @@ namespace UnsocNetwork.Controllers
         [Authorize]
         [Route("MyProfile")]
         [HttpGet]
-        public async Task<IActionResult> MyProfile()
+        public async Task<IActionResult> MyProfile(string notifySuccess = "", string notifyDanger = "")
         {
-            var user = await _userManager.GetUserAsync(User);
-            var model = new UserViewModel(user);
+            var currentUser = await _userManager.GetUserAsync(User);
+            //var friends 
+            var model = new UserViewModel(currentUser) 
+            { 
+                Friends = GetAllFriends(currentUser).Result,
+                NotifySuccess = notifySuccess, 
+                NotifyDanger = notifyDanger
+            };
             return View("User", model);
         }
 
@@ -126,10 +134,10 @@ namespace UnsocNetwork.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    model.Result = "Information updated";
+                    model.NotifySuccess = "Information updated";
                 } else
                 {
-                    model.Result = "Some errors occured!";
+                    model.NotifyDanger = "Some errors occured!";
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
@@ -144,49 +152,50 @@ namespace UnsocNetwork.Controllers
 
         [Route("UserList")]
         [HttpGet]
-        public async Task<IActionResult> UserList(string? search)
+        public async Task<IActionResult> UserList(
+            [Required(ErrorMessage = "Введите поисковый запрос")]
+            [Display(Name = "Найти...")]
+            [StringLength(100, ErrorMessage = "Запрос должен содержать от {2} до {1} символов.", MinimumLength = 1)]
+            string searchString)
         {
-            /*
             var model = new SearchViewModel()
             {
-                UserList = _userManager.Users.ToList()
+                UserList = new List<UserWithFriendExt>(),
+                SearchString = searchString
             };
-            */
-            /*
-            if (search != null)
+            if (ModelState.IsValid)
             {
-                model.UserList = model.UserList.Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
+                model = await CreateSearch(searchString);
             }
-            */
-
-            var model = await CreateSearch(search);
             return View("UserList", model);
         }
 
-        private async Task<SearchViewModel> CreateSearch(string? search)
+        private async Task<SearchViewModel> CreateSearch(string search)
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
             var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
-            var allFriends = await GetAllFriend();
+            var allFriends = await GetAllFriends(currentUser);
 
             var userListWithFriends = new List<UserWithFriendExt>();
             
-            searchList.ForEach(prsn =>
+            searchList.ForEach(person =>
             {
-                var entry = _mapper.Map<UserWithFriendExt>(prsn);
-                entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == prsn.Id || prsn.Id == currentUser.Id).Count() != 0;
+                var entry = _mapper.Map<UserWithFriendExt>(person);
+                entry.IsCurrentUser = (entry.Id == currentUser.Id) ? true : false;
+                if (!entry.IsCurrentUser)
+                    entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == person.Id || person.Id == currentUser.Id).Count() != 0;
                 userListWithFriends.Add(entry);
             });
             
             /*
-            foreach (var prsn in searchList)
+            foreach (var person in searchList)
             {
-                var entry = _mapper.Map<UserWithFriendExt>(prsn);
+                var entry = _mapper.Map<UserWithFriendExt>(person);
                 var count = 0;
                 foreach (var friend in allFriends) 
                 {
-                    if (friend.Id == prsn.Id || prsn.Id == currentUser.Id)
+                    if (friend.Id == person.Id || person.Id == currentUser.Id)
                     {
                         count++;
                     }
@@ -198,19 +207,55 @@ namespace UnsocNetwork.Controllers
             */
             var model = new SearchViewModel()
             {
-                UserList = userListWithFriends
+                UserList = userListWithFriends,
+                SearchString = search
             };
 
             return model;
         }
 
-        private async Task<List<User>> GetAllFriend()
+        private async Task<List<User>> GetAllFriends()
         {
-            var result = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
+            return GetAllFriends(user).Result;
+        }
+
+        private async Task<List<User>> GetAllFriends(User user)
+        {
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 
-            return repository.GetFriendsByUser(result);
+            return repository.GetFriendsByUser(user);
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddFriend(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var newFriend = await _userManager.FindByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+            repository.AddFriend(currentUser, newFriend);
+
+            //return View("UserList", model);
+            return RedirectToAction("MyProfile", "AccountManager", 
+                new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully added" });
+        }
+        
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> DeleteFriend(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var newFriend = await _userManager.FindByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+            repository.DeleteFriend(currentUser, newFriend);
+
+            //return View("UserList", model);
+            return RedirectToAction("MyProfile", "AccountManager", 
+                new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
+        }
+
+
     }
 }

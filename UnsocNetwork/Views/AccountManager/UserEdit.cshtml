@@ -1,20 +1,24 @@
 ﻿@model UnsocNetwork.ViewModels.Account.UserEditViewModel
 
+<center>
+    <label class="text-danger">@Model.NotifyDanger</label>
+    <label class="text-success">@Model.NotifySuccess</label>
+</center>
 <h4>
     Редактирование информации
 </h4>
-@if (Model.IsAttempted)
+<!--@if (Model.IsAttempted)
 {
     <div class="gray-text">
         @Model.Result
     </div>
 }
-
+ -->
 <form class="frm" method="post" asp-controller="AccountManager" asp-action="UserEdit">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <div class="mrgn">
-            <input asp-for="Id" class="form-control"/>
+            <input asp-for="Id" class="form-control" hidden/>
             <span asp-validation-for="Id" class="text-danger"></span>
         </div>
     </div>
@@ -30,8 +34,8 @@
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
     </div>
-    <div class="text-color-gray text-size_12">Дата рождения (год месяц число)</div>
     <div class="mrgn">
+    <div class="text-color-gray text-size_12">Дата рождения (год месяц число)</div>
         <input asp-for="Year" class="form-control date_control" />
         <input asp-for="Month" class="form-control date_control" />
         <input asp-for="Day" class="form-control date_control" />

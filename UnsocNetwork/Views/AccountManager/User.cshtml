@@ -1,9 +1,12 @@
 ﻿@model UnsocNetwork.ViewModels.Account.UserViewModel
 
+<center>
+    <label class="text-danger">@Model.NotifyDanger</label>
+    <label class="text-success">@Model.NotifySuccess</label>
+</center>
 <h3>
     @Model.User.GetFullName()
 </h3>
-@Model.User.Id
 <div class="row">
     <div class="main">
         <img class="main-img" src="@Model.User.PathToPhoto" />
@@ -41,11 +44,36 @@
         </div>
         <a asp-area="" asp-controller="AccountManager" asp-action="ShowEditUserForm">Изменить информацию</a>
     </div>
+</div>
 
-    <div class="lined-block friendcontainer">
-        <label class="gray-text">Список друзей</label>
-        <div class="friendbox">
-            --FriendList--
-        </div>
-    </div>
+<h4>Список друзей:</h4>
+<div class="block-reg background-white">
+    @if (Model.Friends.Count != 0)
+    {
+        @foreach (var item in Model.Friends)
+        {
+            <div class="friendcontainer">
+                <div class="row nowrap">
+                    <div class="main">
+                        <img class="ava" src="@item.PathToPhoto" />
+                    </div>
+                    <div class="side">
+                        <h5>@item.GetFullName()</h5>
+                    </div>
+                </div>
+                <div>
+                    <form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@item.Id" method="post">
+                        <button type="submit" class="btn btn-primary">Написать сообщение</button>
+                    </form>
+                    <form asp-controller="AccountManager" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
+                        <button type="submit" class="btn-sm">Убрать из друзей</button>
+                    </form>
+                </div>
+            </div>
+            <hr />
+        }
+    } else
+    {
+        <label class="gray-text">You are haven't friends yet</label>
+    }
 </div>

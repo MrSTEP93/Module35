@@ -23,5 +23,10 @@ namespace UnsocNetwork.ViewModels.Account
         public bool IsAttempted { get; set; }
 
         public string Result { get; set; }
+
+        public string NotifyDanger { get; set; }
+
+        public string NotifySuccess { get; set; }
+        
     }
 }
