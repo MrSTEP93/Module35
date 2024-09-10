@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
+using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.ViewModels.Account;
 
 namespace UnsocNetwork.Controllers
@@ -17,12 +18,14 @@ namespace UnsocNetwork.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        public RegisterController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         [Route("Register")]
@@ -44,6 +47,9 @@ namespace UnsocNetwork.Controllers
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
                 if (result.Succeeded)
                 {
+                    var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+                    repository.AddFriend(user, user);
+
                     await _signInManager.SignInAsync(user, false);
                     var mainViewModel = new MainViewModel() { 
                         LoginView = new() { Email = model.Email}, 
@@ -51,9 +57,7 @@ namespace UnsocNetwork.Controllers
                         RegStatusView = new(model.FirstName, true) };
                     TempData["MainViewModel"] = JsonConvert.SerializeObject(mainViewModel);
 
-                    return RedirectToAction("Index", "Home");
-                    //return RedirectToAction("Index", "Home", new { model = mainViewModel });
-                    //return View("Home/Index", model);
+                    return RedirectToAction("MyProfile", "AccountManager");
                 }
                 else
                 {

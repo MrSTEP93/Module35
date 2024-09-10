@@ -9,12 +9,15 @@
         @foreach (var user in @Model.UserList)
         {
             <div class="friendcontainer">
-                <h4>@user.GetFullName()</h4>
+                <h5>@user.GetFullName()</h5>
                 @if (!@user.IsFriendWithCurrent)
                 {
                     <form asp-controller="AccountManager" asp-action="AddFriend" asp-route-id="@user.Id" method="post">
                         <button type="submit" class="btn btn-sm btn-primary">Добавить в друзья</button>
                     </form>
+                } else
+                {
+                    <label class="gray-text">Ваш друг</label>
                 }
             </div>
             <hr />

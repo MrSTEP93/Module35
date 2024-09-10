@@ -171,14 +171,15 @@ namespace UnsocNetwork.Controllers
             var allFriends = await GetAllFriend();
 
             var userListWithFriends = new List<UserWithFriendExt>();
-            /*
+            
             searchList.ForEach(prsn =>
             {
                 var entry = _mapper.Map<UserWithFriendExt>(prsn);
                 entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == prsn.Id || prsn.Id == currentUser.Id).Count() != 0;
                 userListWithFriends.Add(entry);
             });
-            */
+            
+            /*
             foreach (var prsn in searchList)
             {
                 var entry = _mapper.Map<UserWithFriendExt>(prsn);
@@ -194,7 +195,7 @@ namespace UnsocNetwork.Controllers
                 entry.IsFriendWithCurrent = count != 0;
                 userListWithFriends.Add(entry);
             }
-
+            */
             var model = new SearchViewModel()
             {
                 UserList = userListWithFriends
