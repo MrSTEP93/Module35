@@ -18,11 +18,5 @@ namespace UnsocNetwork.ViewModels.Account
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }
-
-        private bool IsValid { get
-            {
-                return LoginViewModelValidator.Check(this);
-            } }
-
     }
 }

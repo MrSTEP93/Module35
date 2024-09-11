@@ -65,7 +65,7 @@
                     <form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@item.Id" method="post">
                         <button type="submit" class="btn btn-primary">Написать сообщение</button>
                     </form>
-                    <form asp-controller="AccountManager" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
+                    <form asp-controller="User" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
                         <button type="submit" class="btn-sm">Убрать из друзей</button>
                     </form>
                 </div>

@@ -48,9 +48,10 @@ namespace UnsocNetwork.Controllers
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
                 if (result.Succeeded)
                 {
+                    /*
                     var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
                     repository.AddFriend(user, user);
-
+                    */
                     await _signInManager.SignInAsync(user, false);
                     var mainViewModel = new MainViewModel() { 
                         LoginView = new() { Email = model.Email}, 

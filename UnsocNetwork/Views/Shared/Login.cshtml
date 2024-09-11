@@ -7,6 +7,7 @@
     <h4 class="center">Кто ты?</h4>
     <form class="frm" method="post" asp-controller="AccountManager" asp-action="Login">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="ReturnUrl" class="form-control" hidden/>
         <div>
             <div class="mrgn">
                 EMail:<br />

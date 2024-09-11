@@ -54,9 +54,12 @@ namespace UnsocNetwork.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    if (!string.IsNullOrEmpty(model.ReturnUrl))
                     {
-                        return Redirect(model.ReturnUrl);
+                        //&& Url.IsLocalUrl(model.ReturnUrl))
+                        //return Redirect(model.ReturnUrl);
+                        var uri = new Uri(model.ReturnUrl);
+                        return Redirect(uri.AbsoluteUri);
                     }
                     else
                     {
@@ -100,9 +103,11 @@ namespace UnsocNetwork.Controllers
         {
             var currentUser = await _userManager.GetUserAsync(User);
             //var friends 
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
             var model = new UserViewModel(currentUser) 
             { 
-                Friends = GetAllFriends(currentUser).Result,
+                Friends = repository.GetFriendsByUser(currentUser),
                 NotifySuccess = notifySuccess, 
                 NotifyDanger = notifyDanger
             };
@@ -111,6 +116,7 @@ namespace UnsocNetwork.Controllers
 
         [Authorize]
         [Route("EditProfile")]
+        [HttpGet]
         public async Task<IActionResult> ShowEditUserForm()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -150,112 +156,13 @@ namespace UnsocNetwork.Controllers
             return View("UserEdit", model);
         }
 
-        [Route("UserList")]
+        [Route("Unauthorized")]
         [HttpGet]
-        public async Task<IActionResult> UserList(
-            [Required(ErrorMessage = "Введите поисковый запрос")]
-            [Display(Name = "Найти...")]
-            [StringLength(100, ErrorMessage = "Запрос должен содержать от {2} до {1} символов.", MinimumLength = 1)]
-            string searchString)
+        public async Task<IActionResult> ShowAuthForm(string returnUrl)
         {
-            var model = new SearchViewModel()
-            {
-                UserList = new List<UserWithFriendExt>(),
-                SearchString = searchString
-            };
-            if (ModelState.IsValid)
-            {
-                model = await CreateSearch(searchString);
-            }
-            return View("UserList", model);
+            var model = new LoginViewModel() { ReturnUrl = returnUrl };
+            // string message, string ReturnUrl
+            return View("Unauthorized", model);
         }
-
-        private async Task<SearchViewModel> CreateSearch(string search)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-
-            var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
-            var allFriends = await GetAllFriends(currentUser);
-
-            var userListWithFriends = new List<UserWithFriendExt>();
-            
-            searchList.ForEach(person =>
-            {
-                var entry = _mapper.Map<UserWithFriendExt>(person);
-                entry.IsCurrentUser = (entry.Id == currentUser.Id) ? true : false;
-                if (!entry.IsCurrentUser)
-                    entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == person.Id || person.Id == currentUser.Id).Count() != 0;
-                userListWithFriends.Add(entry);
-            });
-            
-            /*
-            foreach (var person in searchList)
-            {
-                var entry = _mapper.Map<UserWithFriendExt>(person);
-                var count = 0;
-                foreach (var friend in allFriends) 
-                {
-                    if (friend.Id == person.Id || person.Id == currentUser.Id)
-                    {
-                        count++;
-                    }
-                }
-
-                entry.IsFriendWithCurrent = count != 0;
-                userListWithFriends.Add(entry);
-            }
-            */
-            var model = new SearchViewModel()
-            {
-                UserList = userListWithFriends,
-                SearchString = search
-            };
-
-            return model;
-        }
-
-        private async Task<List<User>> GetAllFriends()
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            return GetAllFriends(user).Result;
-        }
-
-        private async Task<List<User>> GetAllFriends(User user)
-        {
-            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-
-            return repository.GetFriendsByUser(user);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> AddFriend(string id)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var newFriend = await _userManager.FindByIdAsync(id);
-            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-            repository.AddFriend(currentUser, newFriend);
-
-            //return View("UserList", model);
-            return RedirectToAction("MyProfile", "AccountManager", 
-                new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully added" });
-        }
-        
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> DeleteFriend(string id)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var newFriend = await _userManager.FindByIdAsync(id);
-            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-            repository.DeleteFriend(currentUser, newFriend);
-
-            //return View("UserList", model);
-            return RedirectToAction("MyProfile", "AccountManager", 
-                new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
-        }
-
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model UnsocNetwork.ViewModels.Account.SearchViewModel;
 
 ﻿<div class="center-align">
-    <form asp-area="" asp-controller="AccountManager" asp-action="UserList" method="get">
+    <form asp-area="" asp-controller="User" asp-action="Search" method="get">
         <i class="fa fa-search"></i>
         <input asp-for="@Model.SearchString">
         <input type="submit" value="Найти" /><br />
@@ -27,7 +27,8 @@
                 {
                     @if (!@user.IsFriendWithCurrent)
                     {
-                        <form asp-controller="AccountManager" asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                        <form asp-controller="User" asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                            <input asp-for="SearchString" hidden />
                             <button type="submit" class="btn btn-sm btn-primary">Добавить в друзья</button>
                         </form>
                     }
