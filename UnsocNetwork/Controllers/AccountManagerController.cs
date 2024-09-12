@@ -2,13 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Extensions;
@@ -21,10 +15,8 @@ namespace UnsocNetwork.Controllers
     public class AccountManagerController : Controller
     {
         private readonly IMapper _mapper;
-
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
         private readonly IUnitOfWork _unitOfWork;
 
         public AccountManagerController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IUnitOfWork unitOfWork)
@@ -50,14 +42,11 @@ namespace UnsocNetwork.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
-
                 var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl))
                     {
-                        //&& Url.IsLocalUrl(model.ReturnUrl))
-                        //return Redirect(model.ReturnUrl);
                         var uri = new Uri(model.ReturnUrl);
                         return Redirect(uri.AbsoluteUri);
                     }
@@ -116,7 +105,6 @@ namespace UnsocNetwork.Controllers
                 return RedirectToAction("ShowAuthForm", "AccountManager",
                         new { returnUrl = $"{Request.Scheme}://{Request.Host}/EditProfile" });
             }
-            // https://localhost:5001/EditProfile
         }
 
         [Authorize]
@@ -126,8 +114,6 @@ namespace UnsocNetwork.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = _mapper.Map<User>(model);
-
                 var user = await _userManager.FindByIdAsync(model.Id.ToString());
                 model.IsAttempted = true;
                 user.Convert(model);
@@ -153,10 +139,9 @@ namespace UnsocNetwork.Controllers
 
         [Route("Unauthorized")]
         [HttpGet]
-        public async Task<IActionResult> ShowAuthForm(string returnUrl)
+        public IActionResult ShowAuthForm(string returnUrl)
         {
             var model = new LoginViewModel() { ReturnUrl = returnUrl };
-            // string message, string ReturnUrl
             return View("Unauthorized", model);
         }
     }

@@ -45,25 +45,14 @@ namespace UnsocNetwork.Controllers
                 model = await CreateSearch(searchString);
             }
             return View("UserList", model);
-            /*
-            if (_signInManager.IsSignedIn(User))
-            {
-            } else
-            {
-                return RedirectToAction("ShowAuthForm", "AccountManager",
-                        new { returnUrl = $"{Request.Scheme}://{Request.Host}/search?SearchString={searchString}" });
-            }
-            */
         }
 
         private async Task<SearchViewModel> CreateSearch(string searchString)
         {
             var currentUser = await _userManager.GetUserAsync(User) ?? new User();
-
-            var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(searchString.ToLower())).ToList();
             var allFriends = await GetAllFriends(currentUser);
-
             var userListWithFriends = new List<UserWithFriendExt>();
+            var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(searchString.ToLower())).ToList();
 
             searchList.ForEach(person =>
             {
@@ -74,23 +63,6 @@ namespace UnsocNetwork.Controllers
                 userListWithFriends.Add(entry);
             });
 
-            /*
-            foreach (var person in searchList)
-            {
-                var entry = _mapper.Map<UserWithFriendExt>(person);
-                var count = 0;
-                foreach (var friend in allFriends) 
-                {
-                    if (friend.Id == person.Id || person.Id == currentUser.Id)
-                    {
-                        count++;
-                    }
-                }
-
-                entry.IsFriendWithCurrent = count != 0;
-                userListWithFriends.Add(entry);
-            }
-            */
             var model = new SearchViewModel()
             {
                 UserList = userListWithFriends,
@@ -103,14 +75,12 @@ namespace UnsocNetwork.Controllers
         private async Task<List<User>> GetAllFriends()
         {
             var user = await _userManager.GetUserAsync(User);
-
-            return GetAllFriends(user).Result;
+            return GetAllFriends(user);
         }
 
-        private async Task<List<User>> GetAllFriends(User user)
+        private List<User> GetAllFriends(User user)
         {
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-
             return repository.GetFriendsByUser(user);
         }
 
@@ -143,16 +113,13 @@ namespace UnsocNetwork.Controllers
                 var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
                 repository.DeleteFriend(currentUser, newFriend);
 
-                //return View("UserList", model);
                 return RedirectToAction("MyProfile", "AccountManager",
                     new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
             } else
             {
                 return RedirectToAction("ShowAuthForm", "AccountManager");
-                //        new { returnUrl = $"{Request.Scheme}://{Request.Host}/MyProfile" });
             }
         }
-
 
         [Authorize]
         [HttpGet]
@@ -164,15 +131,6 @@ namespace UnsocNetwork.Controllers
             foreach (var user in userList)
             {
                 repository.AddFriend(user, user);
-                /*
-                var friendEntity = new Friend()
-                {
-                    CurrentFriend = user,
-                    CurrentFriendId = user.Id,
-                    User = user,
-                    UserId = user.Id
-                };
-                */
             }
             return RedirectToAction("Index", "Home");
         }
