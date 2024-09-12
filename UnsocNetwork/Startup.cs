@@ -31,11 +31,6 @@ namespace UnsocNetwork
           .AddJsonFile(Path.Combine(Environment.CurrentDirectory, "appsettings.Development.json"))
           .Build();
 
-        //public Startup(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -55,7 +50,6 @@ namespace UnsocNetwork
             var assembly = Assembly.GetAssembly(typeof(MappingProfile));
             services.AddAutoMapper(assembly);
 
-
             services.AddIdentity<User, IdentityRole>(opts => {
                 opts.Password.RequiredLength = minimalPasswordLength;
                 opts.Password.RequireNonAlphanumeric = false;
@@ -63,7 +57,8 @@ namespace UnsocNetwork
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
             })
-                    .AddEntityFrameworkStores<AppDbContext>();
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

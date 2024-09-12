@@ -84,10 +84,11 @@ namespace UnsocNetwork.Controllers
             var model = new UserViewModel(currentUser) 
             { 
                 Friends = repository.GetFriendsByUser(currentUser),
+                IsCurrentUser = true,
                 NotifySuccess = notifySuccess, 
                 NotifyDanger = notifyDanger
             };
-            return View("User", model);
+            return View("../User/User", model);
         }
 
         [Route("EditProfile")]
@@ -143,6 +144,24 @@ namespace UnsocNetwork.Controllers
         {
             var model = new LoginViewModel() { ReturnUrl = returnUrl };
             return View("Unauthorized", model);
+        }
+
+        /// <summary>
+        /// Internal service method for manual password change
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            /*
+            var user = await _userManager.FindByIdAsync("6a174e9d-8aab-49aa-9045-3cc878305d76");
+            var newPass = "111";
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPass);
+            await Console.Out.WriteLineAsync(result.Succeeded.ToString());
+            //return View("/Views/Home/Index.cshtml");
+            */
+            return RedirectToAction("Index", "Home");
         }
     }
 }

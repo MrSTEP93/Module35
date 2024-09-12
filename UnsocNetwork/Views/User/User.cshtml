@@ -1,5 +1,8 @@
 ﻿@model UnsocNetwork.ViewModels.Account.UserViewModel
-
+@{
+    ViewData["Title"] = "Главная";
+    ViewData["NoFriendMessage"] = "";
+}
 <center>
     <label class="text-danger">@Model.NotifyDanger</label>
     <label class="text-success">@Model.NotifySuccess</label>
@@ -28,16 +31,22 @@
                 <label class="gray-text">О себе:</label>
                 <label> @Model.User.About</label>
             </div>
-            <div>
-                <label class="gray-text">Email:</label>
-                <label> @Model.User.Email</label>
-            </div>
+            @if (@Model.IsCurrentUser)
+            {
+                <div>
+                    <label class="gray-text">Email:</label>
+                    <label> @Model.User.Email</label>
+                </div>
+            }
             <div>
                 <label class="gray-text">Дата регистрации:</label>
                 <label> @Model.User.RegDate.ToLongDateString()</label>
             </div>
         </div>
-        <a asp-area="" asp-controller="AccountManager" asp-action="ShowEditUserForm">Изменить информацию</a>
+        @if (@Model.IsCurrentUser)
+        {
+            <a asp-area="" asp-controller="AccountManager" asp-action="ShowEditUserForm">Изменить информацию</a>
+        }
     </div>
 </div>
 
@@ -56,19 +65,28 @@
                         <h5>@item.GetFullName()</h5>
                     </div>
                 </div>
-                <div>
-                    <form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@item.Id" method="post">
-                        <button type="submit" class="btn btn-primary">Написать сообщение</button>
-                    </form>
-                    <form asp-controller="User" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
-                        <button type="submit" class="btn-sm">Убрать из друзей</button>
-                    </form>
-                </div>
+                @if (@Model.IsCurrentUser)
+                {
+                    <div>
+                        <form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn btn-primary">Написать сообщение</button>
+                        </form><br />
+                        <form asp-controller="User" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn-sm">Убрать из друзей</button>
+                        </form>
+                    </div>
+                }
             </div>
             <hr />
         }
     } else
     {
-        <label class="gray-text">You are haven't friends yet</label>
+        @if (@Model.IsCurrentUser)
+        {
+            <label class="gray-text">У вас пока нет друзей</label>
+        } else
+        {
+            <label class="gray-text">У пользователя @Model.User.FirstName пока нет друзей</label>
+        }   
     }
 </div>

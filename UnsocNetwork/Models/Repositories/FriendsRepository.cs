@@ -31,9 +31,10 @@ namespace UnsocNetwork.Models.Repositories
 
         public List<User> GetFriendsByUser(User target)
         {
-            var friends = Set.Include(x => x.CurrentFriend).AsEnumerable().Where(x => x.User.Id == target.Id).Select(x => x.CurrentFriend);
+            var set1 = Set.Include(x => x.CurrentFriend).ToList();
+            var friends = Set.Include(x => x.CurrentFriend).AsEnumerable().Where(x => x.User.Id == target.Id).Select(x => x.CurrentFriend).ToList();
 
-            return friends.ToList();
+            return friends;
         }
 
         public void DeleteFriend(User target, User Friend)

@@ -50,7 +50,7 @@ namespace UnsocNetwork.Controllers
         private async Task<SearchViewModel> CreateSearch(string searchString)
         {
             var currentUser = await _userManager.GetUserAsync(User) ?? new User();
-            var allFriends = await GetAllFriends(currentUser);
+            var allFriends = GetAllFriends(currentUser);
             var userListWithFriends = new List<UserWithFriendExt>();
             var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(searchString.ToLower())).ToList();
 
@@ -68,7 +68,6 @@ namespace UnsocNetwork.Controllers
                 UserList = userListWithFriends,
                 SearchString = searchString
             };
-
             return model;
         }
 
@@ -82,6 +81,23 @@ namespace UnsocNetwork.Controllers
         {
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
             return repository.GetFriendsByUser(user);
+        }
+
+        [Route("Person")]
+        [HttpGet]
+        public async Task<IActionResult> ShowPerson(string id)
+        {
+            var person = await _userManager.FindByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            var model = new UserViewModel(person)
+            {
+                Friends = repository.GetFriendsByUser(person),
+                IsCurrentUser = false,
+                NotifySuccess = "",
+                NotifyDanger = ""
+            };
+            return View("User", model);
         }
 
         [HttpPost]
@@ -121,10 +137,15 @@ namespace UnsocNetwork.Controllers
             }
         }
 
+        /// <summary>
+        /// Internal service method (probably, out-of-date)
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
         public IActionResult FillFriends()
         {
+            /*
             var userList = _userManager.Users.ToList();
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 
@@ -132,6 +153,7 @@ namespace UnsocNetwork.Controllers
             {
                 repository.AddFriend(user, user);
             }
+            */
             return RedirectToAction("Index", "Home");
         }
     }

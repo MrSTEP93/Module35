@@ -19,7 +19,10 @@
                         <img class="ava" src="@user.PathToPhoto" />
                     </div>
                     <div class="side">
-                        <h5>@user.GetFullName()</h5>
+                        @{
+                            var idData = new Dictionary<string, string> { { "id", user.Id } };
+                        }
+                        <a asp-controller="User" asp-action="ShowPerson" asp-all-route-data="idData"><h5>@user.GetFullName()</h5></a>
                     </div>
                 </div>
 

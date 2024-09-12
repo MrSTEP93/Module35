@@ -9,6 +9,8 @@ namespace UnsocNetwork.ViewModels.Account
 
         public List<User> Friends { get; set; }
 
+        public bool IsCurrentUser { get; set; }
+
         public string NotifySuccess { get; set; }
         public string NotifyDanger { get; set; }
         
