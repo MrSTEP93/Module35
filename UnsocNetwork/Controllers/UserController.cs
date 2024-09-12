@@ -133,18 +133,24 @@ namespace UnsocNetwork.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> DeleteFriend(string id)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var newFriend = await _userManager.FindByIdAsync(id);
-            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-            repository.DeleteFriend(currentUser, newFriend);
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                var newFriend = await _userManager.FindByIdAsync(id);
+                var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+                repository.DeleteFriend(currentUser, newFriend);
 
-            //return View("UserList", model);
-            return RedirectToAction("MyProfile", "AccountManager",
-                new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
+                //return View("UserList", model);
+                return RedirectToAction("MyProfile", "AccountManager",
+                    new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
+            } else
+            {
+                return RedirectToAction("ShowAuthForm", "AccountManager");
+                //        new { returnUrl = $"{Request.Scheme}://{Request.Host}/MyProfile" });
+            }
         }
 
 

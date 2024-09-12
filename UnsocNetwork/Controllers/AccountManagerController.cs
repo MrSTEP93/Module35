@@ -73,18 +73,6 @@ namespace UnsocNetwork.Controllers
                 }
             }
             return View("Login", model);
-            //return RedirectToAction("Index", "Home");
-            /*
-            StringBuilder values = new();
-            foreach (var item in ModelState.Values)
-            {
-                foreach (var error in item.Errors)
-                {
-                    values.AppendLine($"{error.ErrorMessage} _______ {error.Exception}");
-                }
-            }
-            //TempData["MainViewModel"] = JsonConvert.SerializeObject(model);
-            Console.WriteLine(values);*/
         }
 
         [Route("Logout")]
@@ -102,7 +90,6 @@ namespace UnsocNetwork.Controllers
         public async Task<IActionResult> MyProfile(string notifySuccess = "", string notifyDanger = "")
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            //var friends 
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 
             var model = new UserViewModel(currentUser) 
@@ -114,14 +101,22 @@ namespace UnsocNetwork.Controllers
             return View("User", model);
         }
 
-        [Authorize]
         [Route("EditProfile")]
         [HttpGet]
         public async Task<IActionResult> ShowEditUserForm()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var model = _mapper.Map<User, UserEditViewModel>(user);
-            return View("UserEdit", model);
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var model = _mapper.Map<User, UserEditViewModel>(user);
+                return View("UserEdit", model);
+            }
+            else
+            {
+                return RedirectToAction("ShowAuthForm", "AccountManager",
+                        new { returnUrl = $"{Request.Scheme}://{Request.Host}/EditProfile" });
+            }
+            // https://localhost:5001/EditProfile
         }
 
         [Authorize]
