@@ -87,6 +87,12 @@ namespace UnsocNetwork.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowPerson(string id)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (id == currentUser.Id)
+            {
+                return RedirectToAction("MyProfile", "AccountManager");
+            }
+
             var person = await _userManager.FindByIdAsync(id);
             var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 

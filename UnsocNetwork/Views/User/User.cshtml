@@ -62,7 +62,10 @@
                         <img class="ava" src="@item.PathToPhoto" />
                     </div>
                     <div class="side">
-                        <h5>@item.GetFullName()</h5>
+                        @{
+                            var idData = new Dictionary<string, string> { { "id", item.Id } };
+                        }
+                        <a asp-controller="User" asp-action="ShowPerson" asp-all-route-data="idData"><h5>@item.GetFullName()</h5></a>
                     </div>
                 </div>
                 @if (@Model.IsCurrentUser)

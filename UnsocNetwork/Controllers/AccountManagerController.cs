@@ -88,7 +88,7 @@ namespace UnsocNetwork.Controllers
                 NotifySuccess = notifySuccess, 
                 NotifyDanger = notifyDanger
             };
-            return View("../User/User", model);
+            return View("/Views/User/User.cshtml", model);
         }
 
         [Route("EditProfile")]
