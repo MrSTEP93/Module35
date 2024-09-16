@@ -8,7 +8,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using UnsocNetwork.ViewModels.Account;
+using UnsocNetwork.ViewModels.UserVM;
+using System.Net.Http.Headers;
 
 namespace UnsocNetwork.Controllers
 {
@@ -27,6 +28,24 @@ namespace UnsocNetwork.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [Authorize]
+        [Route("MyProfile")]
+        [HttpGet]
+        public async Task<IActionResult> MyProfile(string notifySuccess = "", string notifyDanger = "")
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            var model = new UserViewModel(currentUser)
+            {
+                FriendsList = repository.GetFriendsByUser(currentUser),
+                IsCurrentUser = true,
+                NotifySuccess = notifySuccess,
+                NotifyDanger = notifyDanger
+            };
+            return View("User", model);
+        }
+
         [Route("search")]
         [HttpGet]
         public async Task<IActionResult> Search(
@@ -37,23 +56,24 @@ namespace UnsocNetwork.Controllers
         {
             var model = new SearchViewModel()
             {
-                UserList = new List<UserWithFriendExt>(),
+                PersonList = new PersonListWithFriendFlags(),
                 SearchString = searchString
             };
             if (ModelState.IsValid)
             {
                 model = await CreateSearch(searchString);
             }
-            return View("UserList", model);
+            return View("Search", model);
         }
 
         private async Task<SearchViewModel> CreateSearch(string searchString)
         {
             var currentUser = await _userManager.GetUserAsync(User) ?? new User();
-            var allFriends = GetAllFriends(currentUser);
+            
             var userListWithFriends = new List<UserWithFriendExt>();
             var searchList = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(searchString.ToLower())).ToList();
-
+            /*
+             * var allFriends = GetAllFriends(currentUser);
             searchList.ForEach(person =>
             {
                 var entry = _mapper.Map<UserWithFriendExt>(person);
@@ -62,10 +82,10 @@ namespace UnsocNetwork.Controllers
                     entry.IsFriendWithCurrent = allFriends.Where(y => y.Id == person.Id || person.Id == currentUser.Id).Count() != 0;
                 userListWithFriends.Add(entry);
             });
-
+            */
             var model = new SearchViewModel()
             {
-                UserList = userListWithFriends,
+                PersonList = FillPersonList(searchList, currentUser),
                 SearchString = searchString
             };
             return model;
@@ -83,6 +103,21 @@ namespace UnsocNetwork.Controllers
             return repository.GetFriendsByUser(user);
         }
 
+        private PersonListWithFriendFlags FillPersonList(List<User> list, User currentUser)
+        {
+            var allFriends = GetAllFriends(currentUser);
+            PersonListWithFriendFlags result = new();
+            //var data = new List<UserWithFriendExt>();
+            list.ForEach(person =>
+            {
+                var element = _mapper.Map<UserWithFriendExt>(person);
+                element.IsFriendWithCurrent = allFriends.Where(y => y.Id == person.Id || person.Id == currentUser.Id).Count() != 0;
+                result.List.Add(element);
+            });
+
+            return result;
+        }
+
         [Route("Person")]
         [HttpGet]
         public async Task<IActionResult> ShowPerson(string id)
@@ -90,7 +125,7 @@ namespace UnsocNetwork.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (id == currentUser.Id)
             {
-                return RedirectToAction("MyProfile", "AccountManager");
+                return RedirectToAction("MyProfile");
             }
 
             var person = await _userManager.FindByIdAsync(id);
@@ -98,7 +133,7 @@ namespace UnsocNetwork.Controllers
 
             var model = new UserViewModel(person)
             {
-                Friends = repository.GetFriendsByUser(person),
+                FriendsList = repository.GetFriendsByUser(person),
                 IsCurrentUser = false,
                 NotifySuccess = "",
                 NotifyDanger = ""
@@ -116,7 +151,7 @@ namespace UnsocNetwork.Controllers
                 var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
                 repository.AddFriend(currentUser, newFriend);
 
-                return RedirectToAction("MyProfile", "AccountManager",
+                return RedirectToAction("MyProfile",
                     new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully added" });
             } else
             {
@@ -135,7 +170,7 @@ namespace UnsocNetwork.Controllers
                 var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
                 repository.DeleteFriend(currentUser, newFriend);
 
-                return RedirectToAction("MyProfile", "AccountManager",
+                return RedirectToAction("MyProfile",
                     new { notifySuccess = $"Friend {newFriend.FirstName} {newFriend.LastName} successfully deleted" });
             } else
             {

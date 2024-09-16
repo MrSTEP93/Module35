@@ -1,0 +1,19 @@
+﻿@model SearchViewModel;
+
+﻿<div class="center-align">
+    <form asp-area="" asp-controller="User" asp-action="Search" method="get">
+        <i class="fa fa-search"></i>
+        <input asp-for="@Model.SearchString">
+        <input type="submit" value="Найти" /><br />
+        <span asp-validation-for="@Model.SearchString" class="text-danger"></span>
+    </form>
+</div>
+<div class="block-reg background-white">
+    @if (@Model.UserList.Count != 0)
+    {
+        <partial name="_UserListPartial" />
+    } else
+    {
+        <label class="gray-text">Поиск не дал результатов</label>
+    }
+</div>
