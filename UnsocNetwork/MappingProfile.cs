@@ -4,7 +4,6 @@ using System;
 using System.Net;
 using UnsocNetwork.Models;
 using UnsocNetwork.ViewModels.Account;
-using UnsocNetwork.ViewModels.UserVM;
 
 namespace UnsocNetwork
 {

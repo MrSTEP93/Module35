@@ -1,4 +1,4 @@
-﻿@model UserViewModel
+﻿@model UnsocNetwork.ViewModels.Account.UserViewModel
 @{
     ViewData["Title"] = "Главная";
     ViewData["NoFriendMessage"] = "";
@@ -52,9 +52,9 @@
 
 <h4>Список друзей:</h4>
 <div class="block-reg background-white">
-    @if (Model.FriendsList.Count != 0)
+    @if (Model.Friends.Count != 0)
     {
-        @foreach (var item in Model.FriendsList)
+        @foreach (var item in Model.Friends)
         {
             <div class="friendcontainer">
                 <div class="row nowrap">

@@ -52,7 +52,7 @@ namespace UnsocNetwork.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("MyProfile", "User");
+                        return RedirectToAction("MyProfile", "AccountManager");
                     }
                 }
                 else
@@ -71,6 +71,24 @@ namespace UnsocNetwork.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [Route("MyProfile")]
+        [HttpGet]
+        public async Task<IActionResult> MyProfile(string notifySuccess = "", string notifyDanger = "")
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            var model = new UserViewModel(currentUser) 
+            { 
+                Friends = repository.GetFriendsByUser(currentUser),
+                IsCurrentUser = true,
+                NotifySuccess = notifySuccess, 
+                NotifyDanger = notifyDanger
+            };
+            return View("/Views/User/User.cshtml", model);
         }
 
         [Route("EditProfile")]

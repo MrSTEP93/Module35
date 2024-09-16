@@ -51,7 +51,7 @@ namespace UnsocNetwork.Controllers
                         RegStatusView = new(model.FirstName, true) };
                     TempData["MainViewModel"] = JsonConvert.SerializeObject(mainViewModel);
 
-                    return RedirectToAction("MyProfile", "User");
+                    return RedirectToAction("MyProfile", "AccountManager");
                 }
                 else
                 {
