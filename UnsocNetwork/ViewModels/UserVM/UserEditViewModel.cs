@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using UnsocNetwork.Models;
+using UnsocNetwork.ViewModels.Account;
 
-namespace UnsocNetwork.ViewModels.Account
+namespace UnsocNetwork.ViewModels.UserVM
 {
     public class UserEditViewModel : BaseUserData
     {
@@ -27,6 +28,6 @@ namespace UnsocNetwork.ViewModels.Account
         public string NotifyDanger { get; set; }
 
         public string NotifySuccess { get; set; }
-        
+
     }
 }

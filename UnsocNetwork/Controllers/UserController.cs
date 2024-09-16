@@ -8,7 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using UnsocNetwork.ViewModels.Account;
+using UnsocNetwork.ViewModels.UserVM;
 
 namespace UnsocNetwork.Controllers
 {
@@ -42,12 +42,12 @@ namespace UnsocNetwork.Controllers
             };
             if (ModelState.IsValid)
             {
-                model = await CreateSearch(searchString);
+                model = await CreateSearchModel(searchString);
             }
-            return View("UserList", model);
+            return View("SearchUserList", model);
         }
 
-        private async Task<SearchViewModel> CreateSearch(string searchString)
+        private async Task<SearchViewModel> CreateSearchModel(string searchString)
         {
             var currentUser = await _userManager.GetUserAsync(User) ?? new User();
             var allFriends = GetAllFriends(currentUser);

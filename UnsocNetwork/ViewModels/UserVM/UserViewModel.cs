@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnsocNetwork.Models;
 
-namespace UnsocNetwork.ViewModels.Account
+namespace UnsocNetwork.ViewModels.UserVM
 {
     public class UserViewModel
     {
@@ -13,7 +13,7 @@ namespace UnsocNetwork.ViewModels.Account
 
         public string NotifySuccess { get; set; }
         public string NotifyDanger { get; set; }
-        
+
         public UserViewModel(User user)
         {
             User = user;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using UnsocNetwork.Models;
 
-namespace UnsocNetwork.ViewModels.Account
+namespace UnsocNetwork.ViewModels.UserVM
 {
     public class SearchViewModel
     {

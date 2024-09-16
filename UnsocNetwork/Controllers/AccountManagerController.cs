@@ -9,6 +9,7 @@ using UnsocNetwork.Extensions;
 using UnsocNetwork.Models;
 using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.ViewModels.Account;
+using UnsocNetwork.ViewModels.UserVM;
 
 namespace UnsocNetwork.Controllers
 {

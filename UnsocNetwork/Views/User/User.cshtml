@@ -1,8 +1,5 @@
-﻿@model UnsocNetwork.ViewModels.Account.UserViewModel
-@{
-    ViewData["Title"] = "Главная";
-    ViewData["NoFriendMessage"] = "";
-}
+﻿@model UnsocNetwork.ViewModels.UserVM.UserViewModel
+
 <center>
     <label class="text-danger">@Model.NotifyDanger</label>
     <label class="text-success">@Model.NotifySuccess</label>
@@ -71,12 +68,9 @@
                 @if (@Model.IsCurrentUser)
                 {
                     <div>
-                        <form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn btn-primary">Написать сообщение</button>
-                        </form><br />
-                        <form asp-controller="User" asp-action="DeleteFriend" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn-sm">Убрать из друзей</button>
-                        </form>
+                        <partial name="/Views/User/_OpenChatButtonPartial.cshtml" model="@item" />
+                        <br />
+                        <partial name="/Views/User/_DeleteFriendButtonPartial.cshtml" model="@item" />
                     </div>
                 }
             </div>
