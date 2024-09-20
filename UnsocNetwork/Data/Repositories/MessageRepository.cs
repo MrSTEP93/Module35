@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnsocNetwork.Data;
+using UnsocNetwork.Models;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.Repositories
 {
     public class MessageRepository : Repository<Message>
     {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using UnsocNetwork.Data;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {

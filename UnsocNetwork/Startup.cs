@@ -13,8 +13,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
-using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.Extensions;
+using UnsocNetwork.Data;
+using UnsocNetwork.Data.Repositories;
 
 namespace UnsocNetwork
 {

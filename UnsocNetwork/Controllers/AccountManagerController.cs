@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using UnsocNetwork.Data;
+using UnsocNetwork.Data.Repositories;
+using UnsocNetwork.Data.UoW;
 using UnsocNetwork.Extensions;
 using UnsocNetwork.Models;
-using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.ViewModels.Account;
 using UnsocNetwork.ViewModels.UserVM;
 
@@ -165,14 +167,15 @@ namespace UnsocNetwork.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        /*
+        /// <summary>
+        /// Internal service method for generating test users
+        /// </summary>
         [Route("Generate")]
         [HttpGet]
         public async Task<IActionResult> Generate()
         {
-
-            var usergen = new GenetateUsers();
-            var userlist = usergen.Populate(35);
+            var usergen = new UserGenerator();
+            var userlist = usergen.Populate(10);
 
             foreach (var user in userlist)
             {
@@ -184,6 +187,5 @@ namespace UnsocNetwork.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        */
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using UnsocNetwork.Data.Repositories;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -12,7 +13,7 @@ namespace UnsocNetwork.Models.Repositories
 
         public UnitOfWork(AppDbContext app)
         {
-            this._appContext = app;
+            _appContext = app;
         }
 
         public void Dispose()

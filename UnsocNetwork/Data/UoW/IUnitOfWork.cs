@@ -1,6 +1,7 @@
 ﻿using System;
+using UnsocNetwork.Data.Repositories;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.UoW
 {
     public interface IUnitOfWork : IDisposable
     {

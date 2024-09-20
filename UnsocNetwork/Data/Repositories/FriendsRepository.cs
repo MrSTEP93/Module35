@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using UnsocNetwork.Data;
+using UnsocNetwork.Models;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.Repositories
 {
     public class FriendsRepository : Repository<Friend>
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using UnsocNetwork.Models.Repositories;
+using UnsocNetwork.Data.Repositories;
+using UnsocNetwork.Data.UoW;
 
 namespace UnsocNetwork.Extensions
 {

@@ -7,7 +7,6 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnsocNetwork.Models;
-using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.ViewModels.Account;
 
 namespace UnsocNetwork.Controllers

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UnsocNetwork.Models.Repositories
+namespace UnsocNetwork.Data.Repositories
 {
     public interface IRepository<T> where T : class
     {

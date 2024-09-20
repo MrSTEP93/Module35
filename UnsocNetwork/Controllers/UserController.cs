@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UnsocNetwork.Models.Repositories;
 using UnsocNetwork.Models;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using UnsocNetwork.ViewModels.UserVM;
+using UnsocNetwork.Data.Repositories;
+using UnsocNetwork.Data.UoW;
 
 namespace UnsocNetwork.Controllers
 {
@@ -87,23 +88,32 @@ namespace UnsocNetwork.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowPerson(string id)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (id == currentUser.Id)
+            if (_signInManager.IsSignedIn(User))
             {
-                return RedirectToAction("MyProfile", "AccountManager");
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (id == currentUser.Id)
+                {
+                    return RedirectToAction("MyProfile", "AccountManager");
+                }
+
+                var person = await _userManager.FindByIdAsync(id);
+                var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+                var model = new UserViewModel(person)
+                {
+                    Friends = repository.GetFriendsByUser(person),
+                    IsCurrentUser = false,
+                    NotifySuccess = "",
+                    NotifyDanger = ""
+                };
+                return View("User", model);
+            
             }
-
-            var person = await _userManager.FindByIdAsync(id);
-            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
-
-            var model = new UserViewModel(person)
+            else
             {
-                Friends = repository.GetFriendsByUser(person),
-                IsCurrentUser = false,
-                NotifySuccess = "",
-                NotifyDanger = ""
-            };
-            return View("User", model);
+                return RedirectToAction("ShowAuthForm", "AccountManager",
+                        new { returnUrl = $"{Request.Scheme}://{Request.Host}/Person?id={id}" });
+            }
         }
 
         [HttpPost]

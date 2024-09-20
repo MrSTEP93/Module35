@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UnsocNetwork.Configurations;
 using UnsocNetwork.Models;
 
-namespace UnsocNetwork
+namespace UnsocNetwork.Data
 {
     public class AppDbContext : IdentityDbContext<User>
     {
@@ -17,8 +17,8 @@ namespace UnsocNetwork
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration<Friend>(new FriendConfiguration());
-            builder.ApplyConfiguration<Message>(new MessageConfiguration());
+            builder.ApplyConfiguration(new FriendConfiguration());
+            builder.ApplyConfiguration(new MessageConfiguration());
         }
     }
 }
