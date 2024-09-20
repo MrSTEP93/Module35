@@ -3,5 +3,5 @@
 
 Чтобы прописать собственную строку подключения, отредактируйте файл **appsettings.Development.json**
 ### Внимание!!!
-Название параметра ConnectionStrings.**Un**DefaultConnection указано неправильно!
+Название параметра ConnectionStrings.**__NOT__**DefaultConnection указано неправильно!
 Отредактируйте его для себя при необходимости!
