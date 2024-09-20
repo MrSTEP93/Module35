@@ -47,7 +47,16 @@ namespace UnsocNetwork.Models.Repositories
             var resultList = new List<Message>();
             resultList.AddRange(from);
             resultList.AddRange(to);
-            resultList.OrderBy(x => x.Date);
+            resultList = resultList.OrderBy(x => x.Date).ToList();
+            /*
+            foreach (var message in resultList)
+            {
+                if (message.Date == DateTime.Now.Date)
+                {
+                    message.Date = DateTime.Now.TimeOfDay;
+                }
+            }
+            */
             return resultList;
         }
     }

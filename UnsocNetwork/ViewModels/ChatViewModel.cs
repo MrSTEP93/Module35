@@ -8,7 +8,7 @@ namespace UnsocNetwork.ViewModels
     {
         public List<Message> Messages { get; set; }
 
-        public string RecepientId { get; set; }
+        public User Recipient { get; set; }
 
         public string Text { get; set; }
 

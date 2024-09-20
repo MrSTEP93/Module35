@@ -27,6 +27,19 @@
     float: right;
 }
 
+.right-text {
+    text-align: right
+}
+
+.left-text {
+    text-align: left
+}
+
+.block75 {
+    width: 75%;
+    text-align: center
+}
+
 .topnav input[type=text] {
     padding: 6px;
     margin-top: 8px;

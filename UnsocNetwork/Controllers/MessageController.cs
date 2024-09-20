@@ -30,12 +30,13 @@ namespace UnsocNetwork.Controllers
         public async Task<IActionResult> Chat(string id)
         {
             var currentUser = await _userManager.GetUserAsync(User);
+            var recipient = await _userManager.FindByIdAsync(id);
             
             var repo = _unitOfWork.GetRepository<Message>() as MessageRepository;
             var model = new ChatViewModel()
             {
                 Messages = repo.GetMessages(currentUser.Id, id),
-                RecepientId = id
+                Recipient = recipient
             };
 
             return View("Chat", model);
@@ -43,16 +44,16 @@ namespace UnsocNetwork.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string recepientId,
+        public async Task<IActionResult> SendMessage(string recipientId,
                     [StringLength(255, ErrorMessage = "Сообщение должно содержать от {2} до {1} символов.", MinimumLength = 1)] 
                     string text)
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
             var repo = _unitOfWork.GetRepository<Message>() as MessageRepository;
-            repo.SendMessage(currentUser.Id, recepientId, text);
+            repo.SendMessage(currentUser.Id, recipientId, text);
 
-            return RedirectToAction("Chat", "Message", new {id = recepientId });
+            return RedirectToAction("Chat", "Message", new {id = recipientId });
         }
     }
 }
