@@ -40,8 +40,8 @@ namespace UnsocNetwork
             services
                 .AddDbContext<AppDbContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton)
                 .AddUnitOfWork()
-                .AddCustomRepository<Friend, FriendsRepository>();
-                //.AddCustomRepository<Message, MessageRepository>();
+                .AddCustomRepository<Friend, FriendsRepository>()
+                .AddCustomRepository<Message, MessageRepository>();
 
             var passwordPolicies = Configuration["PasswordPolicies:MinimalLenght"];
             byte.TryParse(passwordPolicies, out minimalPasswordLength);

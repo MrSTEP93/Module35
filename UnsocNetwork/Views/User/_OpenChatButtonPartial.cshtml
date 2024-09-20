@@ -1,5 +1,5 @@
 ﻿@model UnsocNetwork.Models.User;
 
-<form asp-controller="AccountManager" asp-action="SendMessage" asp-route-id="@Model.Id" method="post">
-    <button type="submit" class="btn_submit">Написать сообщение</button>
+<form asp-controller="Message" asp-action="Chat" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn_submit">Открыть чат</button>
 </form>

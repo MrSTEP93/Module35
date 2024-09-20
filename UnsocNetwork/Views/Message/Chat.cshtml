@@ -1,0 +1,24 @@
+﻿@model UnsocNetwork.ViewModels.ChatViewModel;
+
+@if (Model.Messages.Count != 0)
+{
+    <div class="main">
+        @foreach(var item in Model.Messages)
+        {
+            <h5 class="nowrap">@item.Sender.FirstName</h5>
+            <label class="gray-text">@item.Date</label>
+            <div class="row">@item.Text</div>
+        }
+    </div>
+} else
+{
+    <label>Сообщений пока нет</label>
+}
+<div>
+    <form asp-controller="Message" asp-action="SendMessage" method="post">
+        <input asp-for="RecepientId" hidden/>
+        <input type="text" asp-for="Text" />
+        <span asp-validation-for="Text" class="text-danger"></span>
+        <input type="Submit" class="btn_submit" value="Отправить"/>
+    </form>
+</div>
