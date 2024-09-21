@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCore7", "UnsocialNetwork\NetCore7.csproj", "{9F0DDD6C-E5B2-489F-9F96-86EDEBAF6019}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsocNetwork", "UnsocNetwork\UnsocNetwork.csproj", "{D6A6BBAD-AFCE-470C-A74E-99864B72C786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnsocNetwork", "UnsocNetwork\UnsocNetwork.csproj", "{D6A6BBAD-AFCE-470C-A74E-99864B72C786}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F0DDD6C-E5B2-489F-9F96-86EDEBAF6019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F0DDD6C-E5B2-489F-9F96-86EDEBAF6019}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F0DDD6C-E5B2-489F-9F96-86EDEBAF6019}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F0DDD6C-E5B2-489F-9F96-86EDEBAF6019}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6A6BBAD-AFCE-470C-A74E-99864B72C786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6A6BBAD-AFCE-470C-A74E-99864B72C786}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A6BBAD-AFCE-470C-A74E-99864B72C786}.Release|Any CPU.ActiveCfg = Release|Any CPU
